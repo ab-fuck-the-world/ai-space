@@ -7,12 +7,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
 
-    <title>ab就这样fuck全宇宙</title>
+    <title>ab就这样fuck全宇宙 v2.5</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';</script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
     <style>
@@ -53,13 +52,8 @@
         .star { position: absolute; background-color: #fff; border-radius: 50%; opacity: 0; box-shadow: 0 0 6px var(--mint-dark); animation: twinkle var(--star-dur, 3s) ease-in-out infinite alternate; }
         @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.6); } 100% { opacity: 0.8; transform: scale(1.2); } }
 
-        #cursorDot { position: fixed; top: 0; left: 0; width: 5px; height: 5px; background: var(--mint-dark); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.3s ease; }
-        #cursorOutline { position: fixed; top: 0; left: 0; width: 22px; height: 22px; border: 1.5px solid var(--mint-dark); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.25s, height 0.25s, background 0.25s, border-color 0.25s, opacity 0.3s ease; opacity: 0; background: color-mix(in srgb, var(--mint-dark) 35%, transparent); backdrop-filter: blur(1px); }
-        body.cursor-hover #cursorOutline { width: 32px; height: 32px; background: color-mix(in srgb, var(--mint-dark) 50%, transparent); border-width: 2px; }
-        @media (max-width: 768px) { #cursorDot, #cursorOutline { display: none !important; } }
-
         body { color: var(--text-main); font-family: 'Segoe UI', 'PingFang SC', sans-serif; height: 100vh; height: 100dvh; overflow: hidden; user-select: none; -webkit-user-select: none; transition: color 0.3s ease; }
-        .scrollable-section { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; padding-bottom: 150px; -webkit-overflow-scrolling: touch; }
+        .scrollable-section { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
         .glass { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px var(--glass-shadow); transition: background 0.3s ease, border 0.3s ease; }
         
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(3px); z-index: 90; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
@@ -84,42 +78,9 @@
         body.dark-ui option { background: #1A1A1A; color: #FFFFFF; }
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
-        input[type=range] { -webkit-appearance: none; background: transparent; margin: 0; padding: 0; outline: none; display: inline-block; vertical-align: middle; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--mint-dark); cursor: pointer; border: 2.5px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-top: -6px; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 5px; cursor: pointer; background: var(--glass-border); border-radius: 3px; }
-
-        /* 画板及阅读器样式 */
-        #canvasContainer::after { content: ''; position: absolute; left: 50%; top: 15%; bottom: 15%; width: 1.5px; background: linear-gradient(to bottom, transparent, var(--glass-border), transparent); pointer-events: none; transition: opacity 0.3s ease; }
-        .canvas-locked::after { background: linear-gradient(to bottom, transparent, rgba(255,0,0,0.4), transparent) !important; }
-        #drawCanvas { touch-action: none; display: block; width: 100%; height: 100%; }
-        .brush-select { border: 2px solid var(--mint-dark) !important; background: var(--glass-border) !important; }
-
-        .book-wrapper { position: relative; width: 100%; min-height: 100%; transition: background 0.3s ease, color 0.3s ease; border-radius: 0; touch-action: pan-y; }
-        .book-content { transition: font-size 0.25s ease; font-size: 16px; line-height: 2.2; letter-spacing: 0.05em; text-align: justify; padding-bottom: 60px; }
-        .book-content p { text-indent: 2em; margin-bottom: 1em; } 
-        .theme-glass { background: transparent; color: var(--text-main); }
-        .theme-parchment { background: #F4ECD8 !important; color: #5C4033 !important; }
-        .theme-dark { background: #1A1A1A !important; color: #D4D4D4 !important; }
-        .theme-sakura { background: #FFF0F5 !important; color: #8B5A2B !important; }
-        .color-dot { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
-        .color-dot.active { border-color: var(--mint-dark); } 
-        #pdfLoading { position: absolute; inset: 0; background: var(--glass-bg); backdrop-filter: blur(10px); z-index: 50; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; display: none; }
-        #pdfLoading:not(.hidden) { display: flex; pointer-events: auto; }
-
-        .page-btn { width: var(--page-ctrl-size); height: var(--page-ctrl-size); z-index: 10; }
-        #edgeLeft, #edgeRight { position: fixed; z-index: 9; bottom: var(--page-ctrl-pos); height: 60vh; width: var(--page-ctrl-size); background: transparent; cursor: pointer; }
-        #edgeLeft { left: 0; } #edgeRight { right: 0; }
-
-        .floating-btn-wrap { position: fixed; z-index: 80; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; pointer-events: none; transition: opacity 0.3s; left: calc(var(--avatar-x) / 100 * calc(100vw - var(--avatar-size) - 20px) + 10px); top: calc(var(--avatar-y) / 100 * calc(100dvh - var(--avatar-size) - 20px) + 10px); }
-        .roast-bubble { background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 12px 18px; border-radius: 20px; border-bottom-right-radius: 4px; max-width: 250px; font-size: 0.9rem; margin-bottom: 12px; opacity: 0; transform: translateY(10px) scale(0.9); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 8px 30px var(--glass-shadow); pointer-events: none; color: var(--text-main); font-weight: bold; line-height: 1.5; }
-        .roast-bubble.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-        .avatar-trigger { pointer-events: auto; cursor: pointer; position: relative; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .dice-btn { font-size: 40px; width: 75px; height: 75px; border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto; cursor: pointer; background: var(--active-color); color: var(--active-text); box-shadow: 0 10px 25px var(--glass-shadow); transition: transform 0.1s; z-index: 20;}
-        .dice-btn:active { transform: scale(0.9); }
-        .dice-rolling { animation: roll 0.5s infinite linear; pointer-events: none; }
-        @keyframes roll { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         /* 大富翁地图样式 */
         .mono-board-9x9 { display: grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(9, 1fr); gap: 3px; width: 100%; aspect-ratio: 1; max-width: 520px; margin: 0 auto; padding: 3px; border-radius: 16px; border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(10px); }
         .mcell-9x9 { border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; font-size: 8px; font-weight: bold; position: relative; overflow: hidden; text-align: center; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); transition: all 0.3s; padding-bottom: 2px;}
@@ -133,49 +94,213 @@
         .token-player { background: var(--text-main); transform: translate(-3px, -3px); }
         .token-ai { background: var(--mint-dark); transform: translate(3px, 3px); }
         .mcenter-9x9 { grid-column: 2 / 9; grid-row: 2 / 9; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .m-shortcut { position: absolute; font-weight: 900; letter-spacing: 6px; color: var(--mint-dark); opacity: 0.15; font-size: 14px; white-space: nowrap; border-top: 2px dashed var(--mint-dark); border-bottom: 2px dashed var(--mint-dark); padding: 4px 100px; }
-        body.dark-ui .m-shortcut { opacity: 0.25; }
-        .m-line1 { transform: rotate(45deg); }
-        .m-line2 { transform: rotate(-45deg); }
+        .dice-btn { font-size: 40px; width: 75px; height: 75px; border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto; cursor: pointer; background: var(--active-color); color: var(--active-text); box-shadow: 0 10px 25px var(--glass-shadow); transition: transform 0.1s; z-index: 20;}
+        .dice-btn:active { transform: scale(0.9); }
+        .dice-rolling { animation: roll 0.5s infinite linear; pointer-events: none; }
+        @keyframes roll { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* 商城/背包卡片样式 */
         .shop-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .shop-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
         .shop-btn { padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: bold; background: var(--active-color); color: var(--active-text); transition: opacity 0.2s; text-align: center; cursor: pointer; }
-        .shop-btn:hover { opacity: 0.8; }
-        .shop-btn.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+
+        /* 画板及阅读器样式 */
+        input[type=range] { -webkit-appearance: none; background: transparent; margin: 0; padding: 0; outline: none; display: inline-block; vertical-align: middle; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--mint-dark); cursor: pointer; border: 2.5px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-top: -6px; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 5px; cursor: pointer; background: var(--glass-border); border-radius: 3px; }
+        #canvasContainer::after { content: ''; position: absolute; left: 50%; top: 15%; bottom: 15%; width: 1.5px; background: linear-gradient(to bottom, transparent, var(--glass-border), transparent); pointer-events: none; transition: opacity 0.3s ease; }
+        #drawCanvas { touch-action: none; display: block; width: 100%; height: 100%; }
+        .brush-select { border: 2px solid var(--mint-dark) !important; background: var(--glass-border) !important; }
+        .book-wrapper { position: relative; width: 100%; min-height: 100%; transition: background 0.3s ease, color 0.3s ease; border-radius: 0; touch-action: pan-y; }
+        .book-content { transition: font-size 0.25s ease; font-size: 16px; line-height: 2.2; letter-spacing: 0.05em; text-align: justify; padding-bottom: 60px; }
+        .book-content p { text-indent: 2em; margin-bottom: 1em; } 
+        .theme-glass { background: transparent; color: var(--text-main); }
+        .theme-parchment { background: #F4ECD8 !important; color: #5C4033 !important; }
+        .theme-dark { background: #1A1A1A !important; color: #D4D4D4 !important; }
+        .theme-sakura { background: #FFF0F5 !important; color: #8B5A2B !important; }
+        .color-dot { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
+        .color-dot.active { border-color: var(--mint-dark); } 
+        #pdfLoading { position: absolute; inset: 0; background: var(--glass-bg); backdrop-filter: blur(10px); z-index: 50; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; display: none; }
+        #pdfLoading:not(.hidden) { display: flex; pointer-events: auto; }
+        .page-btn { width: var(--page-ctrl-size); height: var(--page-ctrl-size); z-index: 10; }
+        #edgeLeft, #edgeRight { position: fixed; z-index: 9; bottom: var(--page-ctrl-pos); height: 60vh; width: var(--page-ctrl-size); background: transparent; cursor: pointer; }
+        #edgeLeft { left: 0; } #edgeRight { right: 0; }
+
+        .floating-btn-wrap { position: fixed; z-index: 80; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; pointer-events: none; transition: opacity 0.3s; left: calc(var(--avatar-x) / 100 * calc(100vw - var(--avatar-size) - 20px) + 10px); top: calc(var(--avatar-y) / 100 * calc(100dvh - var(--avatar-size) - 20px) + 10px); }
+        .roast-bubble { background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 12px 18px; border-radius: 20px; border-bottom-right-radius: 4px; max-width: 250px; font-size: 0.9rem; margin-bottom: 12px; opacity: 0; transform: translateY(10px) scale(0.9); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 8px 30px var(--glass-shadow); pointer-events: none; color: var(--text-main); font-weight: bold; line-height: 1.5; }
+        .roast-bubble.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .avatar-trigger { pointer-events: auto; cursor: pointer; position: relative; }
     </style>
 </head>
 <body class="flex flex-col">
 
     <div id="toastContainer" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[1000] flex flex-col space-y-2 pointer-events-none"></div>
-    <div id="cursorDot"></div><div id="cursorOutline"></div>
     <div id="bg-layer"></div><div id="stars-container"></div> 
 
     <div id="globalNav" class="fixed top-4 left-4 right-4 z-50 flex justify-between items-start pointer-events-none transition-all duration-300">
         <div id="navLeftBrand" class="glass rounded-full px-5 py-2.5 flex items-center space-x-3 pointer-events-auto shadow-lg transition-opacity duration-300">
             <div class="w-2.5 h-2.5 rounded-full animate-pulse shadow-[0_0_8px_var(--mint-dark)]" style="background-color: var(--mint-dark);"></div>
-            <h1 class="text-[11px] font-bold tracking-[0.2em] opacity-80 uppercase">ab fuck the world</h1>
+            <h1 class="text-[11px] font-bold tracking-[0.2em] opacity-80 uppercase">ab fuck the world v2.5</h1>
         </div>
         <div class="relative pointer-events-auto">
             <button onclick="toggleNavMenu()" class="btn-action w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-white/30 border border-white/20 shadow-lg transition"><span class="text-2xl font-bold opacity-80">≡</span></button>
             <div id="navMenu" class="absolute top-[120%] right-0 hidden flex-col p-2 rounded-2xl glass shadow-2xl origin-top-right transition-all duration-200 border border-white/20 min-w-[100px]">
+                <div onclick="switchTab('chatTab')" class="px-4 py-2.5 mb-1 rounded-xl text-[12px] font-bold cursor-pointer transition hover:bg-white/20 text-center text-pink-500 shadow-sm border border-pink-500/30 bg-pink-500/10">💬 多重宇宙(微信)</div>
                 <div onclick="switchTab('readTab')" class="px-4 py-2.5 mb-1 rounded-xl text-[12px] font-bold cursor-pointer transition hover:bg-white/20 text-center text-[var(--text-main)]">📖 阅读</div>
                 <div onclick="switchTab('drawTab')" class="px-4 py-2.5 mb-1 rounded-xl text-[12px] font-bold cursor-pointer transition hover:bg-white/20 text-center text-[var(--text-main)]">🎨 画板</div>
                 <div onclick="switchTab('monoTab')" class="px-4 py-2.5 mb-1 rounded-xl text-[12px] font-bold cursor-pointer transition hover:bg-white/20 text-center text-[var(--text-main)]">💸 大富翁</div>
                 <div class="w-full h-px bg-white/20 my-1"></div>
-                <div onclick="switchTab('settingTab')" class="px-4 py-2.5 rounded-xl text-[12px] font-bold cursor-pointer transition hover:bg-white/20 text-center text-[var(--text-main)]">⚙️ 配置</div>
+                <div onclick="switchTab('settingTab')" class="px-4 py-2.5 rounded-xl text-[12px] font-bold cursor-pointer transition hover:bg-white/20 text-center text-[var(--text-main)]">⚙️ 系统配置</div>
             </div>
         </div>
     </div>
 
     <main class="flex-1 relative overflow-hidden">
         
+        <section id="chatTab" class="scrollable-section hidden pt-0 pb-0 h-full">
+            
+            <div id="chatListView" class="w-full h-full flex flex-col pt-20 px-4 md:px-8 max-w-4xl mx-auto">
+                <div class="flex justify-between items-center mb-6 shrink-0 glass p-4 rounded-3xl border border-white/20 shadow-md">
+                    <h2 class="text-xl md:text-2xl font-bold tracking-widest flex items-center"><span class="text-3xl mr-2">🪐</span> 多重宇宙节点</h2>
+                    <button onclick="createNewChatSession()" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center shadow-xl transition hover:scale-105" style="background: var(--active-color); color: var(--active-text);"><span class="font-bold text-2xl pb-1">+</span></button>
+                </div>
+                <div id="sessionListContainer" class="flex-1 overflow-y-auto no-scrollbar space-y-3 pb-20">
+                    </div>
+            </div>
+
+            <div id="chatDetailView" class="w-full h-full flex hidden relative md:p-4 md:gap-4 max-w-7xl mx-auto">
+                
+                <div id="mobileSidebarBtn" class="md:hidden fixed left-0 top-1/2 -translate-y-1/2 z-40 w-4 h-24 bg-[var(--mint-dark)]/60 backdrop-blur-md rounded-r-xl flex items-center justify-center cursor-pointer shadow-[0_0_15px_var(--mint-dark)] border border-white/20 border-l-0 transition-opacity" onclick="toggleChatSidebar()">
+                    <span class="text-white text-[9px] font-bold tracking-widest opacity-80" style="writing-mode: vertical-rl;">状态</span>
+                </div>
+
+                <div id="chatSidebar" class="flex flex-col w-full md:w-1/4 max-w-[280px] h-full glass rounded-[32px] p-4 absolute md:relative z-50 left-0 top-0 transition-transform duration-500 cubic-bezier(0.32, 0.72, 0, 1) -translate-x-[110%] md:translate-x-0 border border-white/20 shadow-2xl md:shadow-none bg-black/5 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-0">
+                    <div class="flex justify-between items-center mb-4 md:hidden">
+                        <span class="font-bold tracking-widest text-sm opacity-80">意识数据链路</span>
+                        <button onclick="toggleChatSidebar()" class="text-2xl font-bold opacity-60 hover:opacity-100 px-2">×</button>
+                    </div>
+                    <div id="holoStatePanel" class="flex flex-col space-y-4 h-full relative overflow-y-auto no-scrollbar">
+                        <div class="flex items-center space-x-4 bg-white/10 p-3 rounded-2xl border border-white/20 shrink-0">
+                            <div class="relative">
+                                <img id="stateAvatar" src="" class="w-14 h-14 rounded-full border-2 border-[var(--mint-dark)] object-cover shadow-[0_0_15px_var(--mint-dark)]">
+                                <div class="absolute -bottom-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full animate-pulse border border-white">BPM <span id="stateBPM">--</span></div>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <span class="text-[10px] opacity-70 font-bold mb-1">🔗 偏执/羁绊指数</span>
+                                <div class="w-full bg-black/30 rounded-full h-2 overflow-hidden border border-white/10"><div id="stateObsession" class="bg-gradient-to-r from-pink-500 to-purple-600 h-full transition-all duration-500" style="width: 50%;"></div></div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-[10px] font-bold shrink-0">
+                            <div class="bg-black/10 p-2 rounded-xl border border-white/10 flex flex-col"><span class="opacity-50">📍 当前坐标</span><span id="stateLoc" class="text-xs text-[var(--mint-dark)]">未知</span></div>
+                            <div class="bg-black/10 p-2 rounded-xl border border-white/10 flex flex-col"><span class="opacity-50">👕 衣着外观</span><span id="stateCloth" class="text-xs text-pink-400">默认</span></div>
+                            <div class="bg-black/10 p-2 rounded-xl border border-white/10 flex flex-col col-span-2"><span class="opacity-50">🧍 实时体态微动作</span><span id="statePosture" class="text-xs">等待链路链接...</span></div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 shrink-0" id="stateBuffs"></div>
+                        <div class="bg-black/10 rounded-2xl border border-white/10 p-3 flex flex-col space-y-2 shrink-0">
+                            <span class="text-[10px] opacity-50 font-bold tracking-widest border-b border-white/10 pb-1">👁️ 脑电波深度解析</span>
+                            <div class="flex flex-col"><span class="text-[9px] text-yellow-500">▶ 真实底层需求</span><span id="stateNeed" class="text-[11px] font-bold opacity-90 leading-tight">...</span></div>
+                            <div class="flex flex-col"><span class="text-[9px] text-purple-400">▶ 表层口是心非</span><span id="stateMask" class="text-[11px] font-bold opacity-90 leading-tight">...</span></div>
+                        </div>
+                        <div class="w-full bg-black overflow-hidden rounded-xl border border-[var(--mint-dark)] p-1.5 shrink-0 relative mt-auto">
+                            <marquee scrollamount="2" id="stateSubcon" class="text-[10px] text-[var(--mint-dark)] font-mono tracking-widest opacity-80 py-1">[SYS_LOG] 潜意识数据等待中...</marquee>
+                        </div>
+                    </div>
+                </div>
+                <div id="chatSidebarOverlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 hidden md:hidden transition-opacity opacity-0" onclick="toggleChatSidebar()"></div>
+
+                <div class="flex-1 flex flex-col h-[100dvh] md:h-full glass rounded-none md:rounded-[40px] overflow-hidden relative shadow-2xl border-0 md:border md:border-white/20 w-full pt-16 md:pt-0">
+                    
+                    <div class="h-14 border-b border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-between px-4 md:px-6 shrink-0 z-10 fixed md:relative top-0 left-0 right-0">
+                        <div class="flex items-center">
+                            <button onclick="backToChatList()" class="mr-3 text-xl font-bold opacity-70 hover:opacity-100 p-2">←</button>
+                            <img id="detailChatAvatar" src="" class="w-8 h-8 rounded-full border border-white/50 mr-3 object-cover">
+                            <span id="detailChatName" class="font-bold tracking-widest text-sm opacity-90">会话加载中</span>
+                        </div>
+                        <button onclick="openChatSettingsModal()" class="text-xl font-bold opacity-70 hover:opacity-100 p-2">⚙️</button>
+                    </div>
+                    
+                    <div id="mainChatBox" class="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col space-y-5 no-scrollbar relative mt-0 md:mt-0">
+                        <div class="w-full text-center text-[10px] text-gray-500 italic my-2 opacity-60 font-bold tracking-widest">—— 宇宙链路已接入 ——</div>
+                    </div>
+
+                    <div id="chatActionMenu" class="absolute bottom-[80px] left-2 md:left-4 glass p-4 rounded-3xl hidden z-50 flex-wrap gap-2 shadow-2xl border border-white/20 w-[95%] md:w-80 backdrop-blur-3xl transition-all duration-300 translate-y-4 opacity-0">
+                        <button onclick="triggerChatAction('redpacket')" class="flex flex-col items-center justify-center py-3 px-2 glass rounded-xl hover:bg-white/20 transition flex-1 min-w-[20%]"><span class="text-xl md:text-2xl mb-1">🧧</span><span class="text-[10px] font-bold">发红包</span></button>
+                        <button onclick="triggerChatAction('dice')" class="flex flex-col items-center justify-center py-3 px-2 glass rounded-xl hover:bg-white/20 transition flex-1 min-w-[20%]"><span class="text-xl md:text-2xl mb-1">🎲</span><span class="text-[10px] font-bold">扔骰子</span></button>
+                        <button onclick="triggerChatAction('market')" class="flex flex-col items-center justify-center py-3 px-2 glass rounded-xl hover:bg-white/20 transition flex-1 min-w-[20%]"><span class="text-xl md:text-2xl mb-1">🛒</span><span class="text-[10px] font-bold">交易市场</span></button>
+                        <button onclick="triggerChatAction('jump')" class="flex flex-col items-center justify-center py-3 px-2 glass rounded-xl hover:bg-white/20 transition flex-1 min-w-[20%]"><span class="text-xl md:text-2xl mb-1">🚩</span><span class="text-[10px] font-bold">发邀请</span></button>
+                    </div>
+
+                    <div class="p-3 md:p-5 pb-[calc(env(safe-area-inset-bottom)+12px)] md:pb-5 bg-white/10 flex space-x-2 md:space-x-3 border-t border-white/20 backdrop-blur-3xl shrink-0 items-end">
+                        <button onclick="toggleChatActionMenu()" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center glass hover:bg-white/30 transition shadow-sm shrink-0 border border-white/30"><span class="text-xl md:text-2xl font-bold opacity-70 pb-1">+</span></button>
+                        <textarea id="mainChatInput" rows="1" placeholder="说点什么，或使用 *动作描写*..." class="flex-1 bg-white/30 border border-white/40 rounded-2xl px-4 py-3 md:py-3.5 text-xs md:text-sm font-bold shadow-inner placeholder-white/60 focus:bg-white/40 transition outline-none resize-none max-h-32" oninput="autoExpandTextarea(this)"></textarea>
+                        <button onclick="submitMainChat()" class="w-12 h-10 md:h-12 rounded-2xl flex items-center justify-center shadow-xl transition hover:scale-105 shrink-0" style="background: var(--active-color); color: var(--active-text);"><span class="font-bold text-lg md:text-xl">↑</span></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="chatSettingsModal" class="absolute inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+                <div class="glass w-full max-w-md p-6 rounded-[32px] shadow-2xl border border-white/20 flex flex-col space-y-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold tracking-widest text-lg" id="chatModalTitle">配置当前宇宙节点</h3>
+                        <button onclick="closeChatSettingsModal()" class="text-2xl opacity-60 hover:opacity-100">×</button>
+                    </div>
+                    <div class="flex items-center space-x-4 bg-white/5 p-3 rounded-2xl border border-white/10">
+                        <div class="relative group cursor-pointer" onclick="document.getElementById('sessionAvatarInput').click()">
+                            <img id="sessionAvatarPreview" src="" class="w-16 h-16 rounded-full border-2 border-[var(--mint-dark)] object-cover shadow-md">
+                            <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><span class="text-[10px] text-white">换头像</span></div>
+                            <input type="file" id="sessionAvatarInput" accept="image/*" class="hidden" onchange="handleSessionAvatarUpload(event)">
+                        </div>
+                        <input type="text" id="sessionNameInput" placeholder="给这个宇宙/角色起个名字" class="flex-1 bg-white/10 border border-white/20 rounded-xl p-3 text-sm focus:bg-white/20 transition outline-none font-bold">
+                    </div>
+                    <div class="flex flex-col space-y-1">
+                        <span class="text-xs font-bold opacity-70 tracking-widest pl-2">📜 专属人设 (System Prompt)</span>
+                        <textarea id="sessionPersonaInput" rows="4" placeholder="详细描述TA的性格、说话方式、当前情境..." class="w-full bg-white/10 border border-white/20 rounded-2xl p-4 text-xs resize-none focus:bg-white/20 transition outline-none shadow-inner"></textarea>
+                    </div>
+                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span class="text-xs font-bold opacity-80">🧠 同步全局跨房间记忆</span>
+                        <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" id="sessionSyncToggle" class="sr-only peer" checked><div class="w-8 h-4 bg-black/30 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all" style="background-color: var(--glass-border);"></div></label>
+                    </div>
+                    <div class="flex space-x-3 pt-2">
+                        <button id="btnDeleteSession" onclick="deleteCurrentSession()" class="px-4 py-3 rounded-xl font-bold bg-red-500/20 text-red-500 hover:bg-red-500/40 transition text-sm hidden">删掉TA</button>
+                        <button onclick="saveChatSettings()" class="flex-1 py-3 rounded-xl font-bold shadow-lg transition hover:scale-[1.02]" style="background: var(--active-color); color: var(--active-text);">保存配置</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="globalMarketModal" class="absolute inset-0 glass z-[60] p-4 md:p-6 flex flex-col hidden rounded-[32px] md:rounded-[40px] backdrop-blur-3xl shadow-2xl mx-auto max-w-5xl w-[95%] h-[85vh] mt-20">
+            <div class="flex justify-between items-center mb-6 shrink-0">
+                <h2 class="text-lg md:text-xl font-bold tracking-widest">🛒 全息交易市场</h2>
+                <div class="flex space-x-3 items-center">
+                    <button onclick="triggerAIMarketAction()" class="btn-action text-[10px] md:text-[11px] font-bold bg-white/20 px-4 py-2 rounded-full shadow-sm animate-pulse border border-white/30 hover:bg-white/40">✨ 呼叫 AI 逛市场</button>
+                    <button onclick="toggleGlobalMarket()" class="text-3xl font-bold opacity-60 hover:opacity-100 transition hover:rotate-90">×</button>
+                </div>
+            </div>
+            <div class="flex space-x-2 md:space-x-4 mb-4 shrink-0">
+                <div class="glass flex-1 p-2 md:p-3 rounded-2xl flex flex-col items-center"><span class="text-[9px] md:text-[10px] font-bold opacity-70 mb-1">💰 你的金币</span><span class="text-base md:text-lg font-bold" id="marketMoneyPlayer">$10000</span></div>
+                <div class="glass flex-1 p-2 md:p-3 rounded-2xl flex flex-col items-center"><span class="text-[9px] md:text-[10px] font-bold opacity-70 mb-1">💰 对方金币</span><span class="text-base md:text-lg font-bold" style="color: var(--mint-dark);" id="marketMoneyAI">$10000</span></div>
+            </div>
+            <div class="glass p-3 md:p-4 rounded-2xl mb-4 border-2 border-dashed border-white/30 shrink-0">
+                <h3 class="text-[10px] md:text-xs font-bold mb-3 opacity-80">➕ 上传/上架新商品 (画作、心情、虚拟物)</h3>
+                <div class="flex flex-col space-y-2">
+                    <input type="text" id="ugcName" placeholder="商品名称 (如: 晚安啵啵)" class="bg-white/20 border-0 rounded-xl px-3 py-2 text-xs outline-none">
+                    <input type="text" id="ugcDesc" placeholder="一句话描述它" class="bg-white/20 border-0 rounded-xl px-3 py-2 text-xs outline-none">
+                    <div class="flex space-x-2">
+                        <input type="number" id="ugcPrice" placeholder="售价" class="flex-1 bg-white/20 border-0 rounded-xl px-3 py-2 text-xs outline-none">
+                        <button onclick="publishUGC()" class="shop-btn w-20 md:w-24">上架</button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto no-scrollbar pb-10">
+                <div id="ugcItemsContainer" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
+            </div>
+        </div>
+
         <section id="settingTab" class="scrollable-section hidden pt-24 pb-32">
             <div class="glass w-[90%] max-w-xl p-8 rounded-[40px] space-y-5 text-center mx-auto shadow-xl border border-white/20">
                 <div class="text-3xl mb-2 animate-bounce">✨</div>
+                
                 <div class="border border-white/20 bg-white/5 rounded-3xl p-5 mb-4 relative overflow-hidden text-left">
-                    <span class="text-[11px] font-bold opacity-70 mb-3 block tracking-wider text-center uppercase">🧚‍♀️ 全息 AI 坐标舱</span>
+                    <span class="text-[11px] font-bold opacity-70 mb-3 block tracking-wider text-center uppercase">🧚‍♀️ 游离态悬浮窗坐标</span>
                     <div class="flex justify-center space-x-2 mb-4 bg-black/10 rounded-xl p-1.5 border border-white/10 flex-wrap gap-y-2">
                         <button id="holo-btn-read" onclick="switchHoloTab('read')" class="flex-1 text-[10px] py-1.5 rounded-lg font-bold transition shadow-md bg-white/30 text-black min-w-[60px]">📖 阅读</button>
                         <button id="holo-btn-draw" onclick="switchHoloTab('draw')" class="flex-1 text-[10px] py-1.5 rounded-lg font-bold transition opacity-60 min-w-[60px]">🎨 画板</button>
@@ -191,22 +316,22 @@
 
                 <div class="flex justify-between items-center bg-white/10 p-4 rounded-3xl mb-2 border border-white/20">
                     <div class="flex flex-col items-center w-1/3">
-                        <span class="text-[10px] font-bold opacity-80 mb-2">壁纸</span>
+                        <span class="text-[10px] font-bold opacity-80 mb-2">全局壁纸</span>
                         <div class="flex space-x-1"><input type="file" id="wallpaperInput" accept="image/*" class="hidden" onchange="handleWallpaperUpload(event)"><button onclick="document.getElementById('wallpaperInput').click()" class="text-[10px] bg-white/20 px-3 py-1.5 rounded-full hover:bg-white/40 shadow-sm">上传</button><button onclick="clearWallpaper()" class="text-[10px] bg-red-400/20 text-red-500 font-bold px-2 py-1.5 rounded-full">🗑️</button></div>
                     </div>
                     <div class="flex flex-col items-center w-1/3 border-l border-r border-white/20 px-2">
-                        <span class="text-[10px] font-bold opacity-80 mb-2">皮肤</span>
+                        <span class="text-[10px] font-bold opacity-80 mb-2">默认头像</span>
                         <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
                         <div class="relative group cursor-pointer" onclick="document.getElementById('avatarInput').click()"><img id="settingAvatarPreview" src="" class="w-10 h-10 rounded-full border-2 border-white/50 object-cover shadow-sm transition group-hover:scale-110"><div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><span class="text-[8px] text-white">更换</span></div></div>
                     </div>
                     <div class="flex flex-col items-center w-1/3">
-                        <span class="text-[10px] font-bold opacity-80 mb-2">模式</span>
+                        <span class="text-[10px] font-bold opacity-80 mb-2">UI 模式</span>
                         <button onclick="toggleDarkUI()" class="text-[10px] bg-white/20 px-4 py-1.5 rounded-full hover:bg-white/40 shadow-sm">🌓 深浅色</button>
                     </div>
                 </div>
 
                 <div class="border border-white/20 bg-white/5 rounded-3xl p-4 mb-4">
-                    <span class="text-[11px] font-bold opacity-70 mb-3 block tracking-wider">🎨 调色盘</span>
+                    <span class="text-[11px] font-bold opacity-70 mb-3 block tracking-wider">🎨 全局调色盘</span>
                     <div class="flex justify-around items-center">
                         <div class="flex flex-col items-center"><input type="color" id="color-primary" oninput="applyCustomColor('primary', this.value)" class="w-8 h-8 rounded-full border-0 p-0 bg-transparent cursor-pointer"></div>
                         <div class="flex flex-col items-center"><input type="color" id="color-bg" oninput="applyCustomColor('bg', this.value)" class="w-8 h-8 rounded-full border-0 p-0 bg-transparent cursor-pointer"></div>
@@ -216,50 +341,50 @@
                 </div>
 
                 <div class="flex items-center justify-between bg-white/10 border border-white/20 rounded-2xl p-4 mb-2 shadow-sm">
-                    <span class="text-xs font-bold opacity-90">🎭 允许动作描写 </span>
-                    <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" id="rpActionToggle" class="sr-only peer"><div class="w-10 h-6 bg-black/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style="background-color: var(--glass-border);"></div></label>
+                    <span class="text-xs font-bold opacity-90">🎭 允许动作描写 (沉浸RP)</span>
+                    <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" id="rpActionToggle" class="sr-only peer" checked><div class="w-10 h-6 bg-black/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style="background-color: var(--glass-border);"></div></label>
                 </div>
 
                 <div class="flex items-center justify-between bg-white/10 border border-white/20 rounded-2xl p-4 mb-2 shadow-sm">
-                    <span class="text-xs font-bold opacity-90">🔗 允许跨房间联动 (💸 ➡️ 🎨)</span>
+                    <span class="text-xs font-bold opacity-90">🔗 允许小游戏跨房间联动 (💸 ➡️ 🎨)</span>
                     <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" id="crossRoomToggle" class="sr-only peer" checked><div class="w-10 h-6 bg-black/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style="background-color: var(--glass-border);"></div></label>
                 </div>
 
                 <div class="flex items-center justify-between bg-white/10 border border-white/20 rounded-2xl p-4 mb-2 shadow-sm">
-                    <div class="flex flex-col text-left"><span class="text-xs font-bold opacity-90">🤖 自动压缩记忆</span></div>
+                    <div class="flex flex-col text-left"><span class="text-xs font-bold opacity-90">🤖 自动压缩游戏局内记忆</span></div>
                     <div class="flex items-center space-x-2 shrink-0">
                         <input type="number" id="autoSumThreshold" value="30" min="20" max="100" class="w-12 bg-black/20 border border-white/10 rounded-lg px-1 py-1 text-center text-[10px] outline-none font-bold text-white"><span class="text-[10px] font-bold opacity-70">条</span>
                         <label class="relative inline-flex items-center cursor-pointer ml-2"><input type="checkbox" id="autoSumToggle" class="sr-only peer" checked><div class="w-8 h-4 bg-black/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all" style="background-color: var(--glass-border);"></div></label>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-3 mt-4">
                     <input type="text" id="apiUrl" placeholder="Proxy Base URL" class="w-full bg-white/10 border border-white/10 rounded-2xl p-3 text-sm focus:bg-white/20 transition">
                     <input type="password" id="apiKey" placeholder="API Key" class="w-full bg-white/10 border border-white/10 rounded-2xl p-3 text-sm focus:bg-white/20 transition">
                 </div>
                 <input type="text" id="modelName" placeholder="Model Name" class="w-full bg-white/10 border border-white/10 rounded-2xl p-3 text-sm focus:bg-white/20 transition">
-                <textarea id="persona" rows="3" placeholder="AI 身份设定" class="w-full bg-white/10 border border-white/10 rounded-2xl p-4 text-sm resize-none focus:bg-white/20 transition"></textarea>
                 
-                <div class="border-t border-white/20 pt-5 mt-2 text-left">
+                <div class="border-t border-white/20 pt-5 mt-4 text-left">
                     <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs font-bold opacity-70 uppercase tracking-widest">🧠 核心记忆</span>
+                        <span class="text-xs font-bold opacity-70 uppercase tracking-widest">🧠 小游戏核心记忆库</span>
                         <div class="flex space-x-1 bg-black/10 rounded-lg p-1 border border-white/10 flex-wrap gap-y-1">
                             <button id="mem-btn-read" onclick="switchMemTab('read')" class="text-[10px] px-2 py-1 rounded-md font-bold transition bg-white/30 shadow-md">📖</button>
                             <button id="mem-btn-draw" onclick="switchMemTab('draw')" class="text-[10px] px-2 py-1 rounded-md font-bold transition opacity-60">🎨</button>
                             <button id="mem-btn-mono" onclick="switchMemTab('mono')" class="text-[10px] px-2 py-1 rounded-md font-bold transition opacity-60">💸</button>
                         </div>
                     </div>
-                    <textarea id="coreMemoryInput" rows="2" placeholder="填写核心认知..." class="w-full bg-white/10 border border-white/20 rounded-xl p-3 text-xs resize-none focus:bg-white/20 transition" oninput="saveMemInput()"></textarea>
-                    <div class="flex justify-between items-center mb-2 mt-5">
-                        <span class="text-xs font-bold opacity-70 uppercase tracking-widest">📜 清理区</span>
-                        <button onclick="clearAllContext()" class="text-[11px] bg-red-500/80 text-white font-bold px-4 py-2 rounded-full shadow-lg hover:bg-red-600 transition hover:scale-105">炸毁数据</button>
+                    <textarea id="coreMemoryInput" rows="2" placeholder="填写核心认知..." class="w-full bg-white/10 border border-white/20 rounded-xl p-3 text-xs resize-none focus:bg-white/20 transition outline-none" oninput="saveMemInput()"></textarea>
+                    
+                    <div class="flex justify-between items-center mb-2 mt-5 bg-red-500/10 p-3 rounded-2xl border border-red-500/20">
+                        <span class="text-xs font-bold text-red-500 opacity-90 uppercase tracking-widest">📜 危险区</span>
+                        <button onclick="clearAllContext()" class="text-[10px] bg-red-500 text-white font-bold px-3 py-1.5 rounded-full shadow-md hover:bg-red-600 transition hover:scale-105">炸毁全宇宙数据</button>
                     </div>
                 </div>
-                <button onclick="saveSettings()" class="w-full py-4 mt-4 rounded-2xl font-bold shadow-xl transition hover:opacity-80 border border-white/30 text-base tracking-widest" style="background: var(--active-color); color: var(--active-text);">注入灵魂</button>
+                <button onclick="saveSettings()" class="w-full py-4 mt-4 rounded-2xl font-bold shadow-xl transition hover:opacity-80 border border-white/30 text-base tracking-widest" style="background: var(--active-color); color: var(--active-text);">注入系统灵魂</button>
             </div>
         </section>
 
-        <section id="readTab" class="scrollable-section book-wrapper theme-glass pt-4">
+        <section id="readTab" class="scrollable-section hidden book-wrapper theme-glass pt-4">
             <div id="pdfLoading" class="hidden"><div class="text-5xl mb-4 animate-bounce">📚</div><div class="tracking-widest">吞噬排版中...</div><div id="pdfProgress" class="text-sm font-bold opacity-70 mt-2">0%</div></div>
             <div class="p-4 pt-6 md:p-6 flex justify-between items-center relative z-20 sticky top-0 backdrop-blur-md bg-white/5 border-b border-white/10"> 
                 <input type="file" id="bookInput" accept=".txt, .pdf" class="text-[10px] md:text-xs uppercase tracking-widest opacity-50 w-32 md:w-48 font-bold" onchange="loadBook(event)">
@@ -276,7 +401,7 @@
                     <div id="pagingPosControl" class="flex flex-col space-y-1"><span class="text-[10px] opacity-70 font-bold text-center">↕️ 上下高度调节</span><input type="range" id="pagingPosSlider" min="10" max="300" value="40" oninput="applyPagingSettings()"></div>
                     <div id="pagingSpacingControl" class="flex flex-col space-y-1"><span class="text-[10px] opacity-70 font-bold text-center text-mint-dark">↔️ 按钮间距</span><input type="range" id="pagingSpacingSlider" min="0" max="150" value="80" oninput="applyPagingSettings()"></div>
                     <div class="w-full h-px bg-white/20 my-1"></div>
-                    <select id="roastMode" onchange="applyRoastSettings()" class="w-full bg-white/10 border border-white/20 rounded-xl p-2 text-xs outline-none font-bold text-center"><option value="fixed">📖 固定翻页</option><option value="random">🎲 随机触发</option><option value="time">⏱️ 定时自动</option><option value="manual">🔕 仅手动</option></select>
+                    <select id="roastMode" onchange="applyRoastSettings()" class="w-full bg-white/10 border border-white/20 rounded-xl p-2 text-xs outline-none font-bold text-center"><option value="fixed">📖 固定翻页吐槽</option><option value="random">🎲 随机触发</option><option value="time">⏱️ 定时自动</option><option value="manual">🔕 仅手动点击</option></select>
                     <div id="wrap-roast-fixed" class="flex items-center justify-between mt-1 hidden"><span class="text-[10px] opacity-70 font-bold">间隔页数:</span><input type="number" id="roastFixedPages" value="5" min="1" max="30" class="w-14 bg-white/20 rounded-lg px-2 py-1 text-center text-xs outline-none font-bold" onchange="applyRoastSettings()"></div>
                 </div>
             </div>
@@ -286,34 +411,6 @@
         </section>
 
         <section id="drawTab" class="scrollable-section hidden pt-24 pb-10">
-            <div id="drawMarketModal" class="absolute inset-0 glass z-50 p-6 flex flex-col hidden rounded-[32px] md:rounded-[40px] backdrop-blur-3xl shadow-2xl mx-auto max-w-5xl w-[95%]">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold tracking-widest">🖼️ 自由画作市场</h2>
-                    <div class="flex space-x-3">
-                        <button onclick="triggerAIMarketAction()" class="btn-action text-[11px] font-bold bg-white/20 px-4 py-2 rounded-full shadow-sm animate-pulse border border-white/30 hover:bg-white/40">✨ 呼叫 AI 逛画展</button>
-                        <button onclick="toggleDrawMarket()" class="text-3xl font-bold opacity-60 hover:opacity-100 transition hover:rotate-90">×</button>
-                    </div>
-                </div>
-                <div class="flex space-x-4 mb-4">
-                    <div class="glass flex-1 p-3 rounded-2xl flex flex-col items-center"><span class="text-[10px] font-bold opacity-70 mb-1">💰 你的金币</span><span class="text-lg font-bold" id="marketMoneyPlayer">$10000</span></div>
-                    <div class="glass flex-1 p-3 rounded-2xl flex flex-col items-center"><span class="text-[10px] font-bold opacity-70 mb-1">💰 对方金币</span><span class="text-lg font-bold" style="color: var(--mint-dark);" id="marketMoneyAI">$10000</span></div>
-                </div>
-                <div class="glass p-4 rounded-2xl mb-4 border-2 border-dashed border-white/30 shrink-0">
-                    <h3 class="text-xs font-bold mb-3 opacity-80">➕ 将刚才的画作上架赚差价</h3>
-                    <div class="flex flex-col space-y-2">
-                        <input type="text" id="ugcName" placeholder="画作/商品名称 (如: 一只可爱的修狗)" class="bg-white/20 border-0 rounded-xl px-3 py-2 text-xs outline-none">
-                        <input type="text" id="ugcDesc" placeholder="一句话描述它" class="bg-white/20 border-0 rounded-xl px-3 py-2 text-xs outline-none">
-                        <div class="flex space-x-2">
-                            <input type="number" id="ugcPrice" placeholder="售价" class="flex-1 bg-white/20 border-0 rounded-xl px-3 py-2 text-xs outline-none">
-                            <button onclick="publishUGC()" class="shop-btn w-24">上架</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-1 overflow-y-auto no-scrollbar pb-20">
-                    <div id="ugcItemsContainer" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
-                </div>
-            </div>
-
             <div class="glass flex-1 rounded-[32px] md:rounded-[40px] overflow-hidden flex flex-col p-3 md:p-5 h-[75vh] min-h-[500px] relative shadow-xl mx-auto max-w-5xl border border-white/20 w-[95%]">
                 <div class="flex justify-between items-center mt-2 mb-3 px-2 z-20 shrink-0">
                     <div class="flex space-x-3">
@@ -321,14 +418,13 @@
                         <div id="mode-guess" onclick="setGameMode('guess')" class="mode-tab bg-white/20 px-5">❓ 你画我猜</div>
                         <div id="mode-blind" onclick="setGameMode('blind')" class="mode-tab bg-white/20 px-5">🙈 双人盲绘</div>
                     </div>
-                    <button onclick="toggleDrawMarket()" class="btn-action text-xs font-bold bg-white/20 px-4 py-1.5 rounded-full shadow-lg border border-white/30 hover:bg-white/40 text-pink-500 backdrop-blur-md">🖼️ 逛市场</button>
                 </div>
 
                 <div class="glass mx-auto px-5 py-2.5 rounded-full flex items-center justify-center gap-2 md:gap-4 z-20 w-fit max-w-[98%] overflow-x-auto shadow-md border border-white/30 shrink-0 backdrop-blur-2xl">
                     <input type="color" id="colorPicker" value="#000000" class="w-6 h-6 rounded-full border-0 p-0 bg-transparent cursor-pointer shrink-0">
                     <input type="range" id="brushSize" min="1" max="25" value="3" class="w-12 md:w-16 shrink-0"><button id="btn-pen" onclick="setTool('pen')" class="btn-action px-3 py-1.5 text-[10px] font-bold rounded-full brush-select shadow-sm shrink-0">PEN</button><button id="btn-pencil" onclick="setTool('pencil')" class="btn-action px-3 py-1.5 text-[10px] font-bold rounded-full w-[85px] text-center shrink-0">PENCIL</button><button id="btn-eraser" onclick="setTool('eraser')" class="btn-action px-3 py-1.5 text-[10px] font-bold rounded-full shrink-0">ERASE</button><button onclick="undo()" class="btn-action w-7 h-7 rounded-full glass flex items-center justify-center text-sm hover:bg-white/30 shadow-sm shrink-0">↩</button><button onclick="redo()" class="btn-action w-7 h-7 rounded-full glass flex items-center justify-center text-sm hover:bg-white/30 shadow-sm shrink-0">↪</button><button onclick="clearCanvas()" class="btn-action px-3 py-1.5 text-[10px] opacity-80 hover:opacity-100 font-bold text-red-500 bg-red-500/10 rounded-full shrink-0">RESET</button>
                     <div id="panel-free" class="flex items-center shrink-0"><button onclick="submitFreeDraw()" class="btn-action px-5 py-1.5 text-xs font-bold rounded-full shadow-lg transition hover:scale-105" style="background: var(--active-color); color: var(--active-text);">提交画作</button></div>
-                    <div id="panel-guess" class="flex items-center space-x-2 shrink-0 hidden"><button onclick="submitGuessAI()" class="btn-action px-3 py-1.5 text-[11px] font-bold rounded-full shadow-sm bg-white/40 hover:bg-white/60">🤖 让AI画我来猜</button><div class="w-px h-4 bg-white/40 mx-1"></div><div id="guessLivesWrap" class="flex items-center"><span class="text-[10px] opacity-70 font-bold pl-1">给它机会:</span><input type="number" id="guessLivesInput" value="3" class="w-8 bg-white/30 border-0 rounded-md px-1 py-1 mx-1 text-[10px] outline-none text-center font-bold"></div><button onclick="submitGuessUser()" class="btn-action px-4 py-1.5 text-[11px] font-bold rounded-full shadow-lg transition hover:scale-105" style="background: var(--active-color); color: var(--active-text);">✅ 提交让它猜</button></div>
+                    <div id="panel-guess" class="flex items-center space-x-2 shrink-0 hidden"><button onclick="submitGuessAI()" class="btn-action px-3 py-1.5 text-[11px] font-bold rounded-full shadow-sm bg-white/40 hover:bg-white/60">🤖 让AI画我猜</button><div class="w-px h-4 bg-white/40 mx-1"></div><div id="guessLivesWrap" class="flex items-center"><span class="text-[10px] opacity-70 font-bold pl-1">给它机会:</span><input type="number" id="guessLivesInput" value="3" class="w-8 bg-white/30 border-0 rounded-md px-1 py-1 mx-1 text-[10px] outline-none text-center font-bold"></div><button onclick="submitGuessUser()" class="btn-action px-4 py-1.5 text-[11px] font-bold rounded-full shadow-lg transition hover:scale-105" style="background: var(--active-color); color: var(--active-text);">✅ 提交让它猜</button></div>
                     <div id="panel-blind" class="flex items-center space-x-2 shrink-0 hidden"><input type="text" id="blindTopic" placeholder="盲绘主题..." class="w-20 bg-white/30 border-0 rounded-full px-3 py-1.5 text-[10px] outline-none font-bold"><input type="number" id="blindTimeInput" value="60" class="w-12 bg-white/30 border-0 rounded-full px-2 py-1.5 text-[10px] outline-none text-center font-bold"><button id="btn-start-blind" onclick="startBlindDraw()" class="btn-action px-4 py-1.5 text-[11px] font-bold rounded-full shadow-lg" style="background: var(--active-color); color: var(--active-text);">开始</button><span id="blindTimer" class="text-sm font-bold text-red-500 hidden px-2">60s</span><button id="btn-reveal-blind" onclick="revealBlindDraw()" class="btn-action px-4 py-1.5 text-[11px] bg-red-500 text-white font-bold rounded-full hidden shadow-lg animate-pulse">揭晓</button></div>
                 </div>
                 <div class="flex-1 w-full relative mt-4 rounded-3xl overflow-hidden shadow-inner border border-white/10" id="canvasContainer"><canvas id="drawCanvas" class="absolute inset-0 bg-white/10"></canvas></div>
@@ -338,11 +434,11 @@
         <section id="monoTab" class="scrollable-section hidden pt-24 pb-32">
             <div id="monoShopModal" class="absolute inset-0 glass z-50 p-6 flex flex-col hidden rounded-[40px] backdrop-blur-3xl shadow-2xl mx-auto max-w-3xl w-[95%]">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="font-bold text-xl tracking-widest">🛒 黑市与背包</h2>
+                    <h2 class="font-bold text-xl tracking-widest">🛒 大富翁战术背包</h2>
                     <button onclick="toggleMonoShop()" class="text-3xl font-bold opacity-60 hover:opacity-100 transition hover:rotate-90">×</button>
                 </div>
                 <div class="flex space-x-2 mb-4 bg-white/10 p-1.5 rounded-2xl shrink-0">
-                    <button onclick="switchMonoShopTab('sys')" id="btn-mshop-sys" class="flex-1 py-2 px-3 text-[11px] font-bold rounded-xl transition shadow-md bg-white/30 text-black">🛍️ 道具商店</button>
+                    <button onclick="switchMonoShopTab('sys')" id="btn-mshop-sys" class="flex-1 py-2 px-3 text-[11px] font-bold rounded-xl transition shadow-md bg-white/30 text-black">🛍️ 购买系统道具</button>
                     <button onclick="switchMonoShopTab('inv')" id="btn-mshop-inv" class="flex-1 py-2 px-3 text-[11px] font-bold rounded-xl transition opacity-60">🎒 我的背包</button>
                 </div>
                 <div class="flex-1 overflow-y-auto no-scrollbar pb-20">
@@ -353,20 +449,20 @@
 
             <div class="glass p-4 md:p-8 rounded-[40px] w-[98%] max-w-2xl mx-auto mt-2 relative shadow-2xl border border-white/20 flex flex-col items-center">
                 <div id="monoEditor" class="absolute inset-0 glass z-[60] p-6 flex flex-col hidden rounded-[40px] backdrop-blur-3xl shadow-2xl">
-                    <div class="flex justify-between items-center mb-4"><h2 class="font-bold text-base tracking-widest">💸 大富翁编辑器</h2><button onclick="toggleMonoEditor()" class="text-3xl font-bold opacity-60 hover:opacity-100 transition hover:rotate-90">×</button></div>
+                    <div class="flex justify-between items-center mb-4"><h2 class="font-bold text-base tracking-widest">💸 高级编辑器</h2><button onclick="toggleMonoEditor()" class="text-3xl font-bold opacity-60 hover:opacity-100 transition hover:rotate-90">×</button></div>
                     <div class="flex space-x-2 mb-3 bg-white/10 p-1 rounded-lg shrink-0">
                         <button onclick="switchMonoEditTab('map')" id="btn-medit-map" class="flex-1 py-1.5 text-[11px] font-bold bg-white/30 shadow-md rounded transition">🗺️ 地图</button>
-                        <button onclick="switchMonoEditTab('event')" id="btn-medit-event" class="flex-1 py-1.5 text-[11px] font-bold opacity-60 rounded transition">🃏 命运卡</button>
-                        <button onclick="switchMonoEditTab('judge')" id="btn-medit-judge" class="flex-1 py-1.5 text-[11px] font-bold opacity-60 rounded transition">⚖️ 四角裁决</button>
+                        <button onclick="switchMonoEditTab('event')" id="btn-medit-event" class="flex-1 py-1.5 text-[11px] font-bold opacity-60 rounded transition">🃏 命运</button>
+                        <button onclick="switchMonoEditTab('judge')" id="btn-medit-judge" class="flex-1 py-1.5 text-[11px] font-bold opacity-60 rounded transition">⚖️ 裁决</button>
                     </div>
                     <textarea id="customMonoMapInput" class="flex-1 w-full bg-white/10 border border-white/20 rounded-2xl p-3 text-[10px] outline-none mb-4 resize-none shadow-inner leading-relaxed whitespace-pre font-mono"></textarea>
                     <textarea id="customMonoEventInput" class="flex-1 w-full bg-white/10 border border-white/20 rounded-2xl p-4 text-xs outline-none mb-4 resize-none shadow-inner leading-relaxed hidden"></textarea>
                     <textarea id="customMonoJudgeInput" class="flex-1 w-full bg-red-500/10 border border-red-500/30 rounded-2xl p-4 text-xs outline-none mb-4 resize-none shadow-inner leading-relaxed hidden"></textarea>
-                    <div class="flex space-x-4 shrink-0"><button onclick="saveMonoCustom()" class="flex-1 py-3 rounded-2xl font-bold shadow-lg text-sm tracking-widest hover:scale-[1.02] transition" style="background: var(--active-color); color: var(--active-text);">保存配置并生效</button><button onclick="resetMonoCustom()" class="px-4 py-3 rounded-2xl font-bold bg-red-500/20 text-red-500 hover:bg-red-500/40 shadow-sm transition text-xs">恢复默认</button></div>
+                    <div class="flex space-x-4 shrink-0"><button onclick="saveMonoCustom()" class="flex-1 py-3 rounded-2xl font-bold shadow-lg text-sm tracking-widest hover:scale-[1.02] transition" style="background: var(--active-color); color: var(--active-text);">保存并生效</button><button onclick="resetMonoCustom()" class="px-4 py-3 rounded-2xl font-bold bg-red-500/20 text-red-500 hover:bg-red-500/40 shadow-sm transition text-xs">恢复默认</button></div>
                 </div>
 
                 <div class="absolute top-4 right-4 flex space-x-2 z-20">
-                    <button onclick="toggleMonoShop()" class="h-8 px-3 rounded-full bg-white/30 hover:bg-white/60 shadow-lg transition text-[10px] font-bold tracking-widest backdrop-blur-md border border-white/20">🛍️ 道具背包</button>
+                    <button onclick="toggleMonoShop()" class="h-8 px-3 rounded-full bg-white/30 hover:bg-white/60 shadow-lg transition text-[10px] font-bold tracking-widest backdrop-blur-md border border-white/20">🛍️ 战术背包</button>
                     <button onclick="toggleMonoEditor()" class="w-8 h-8 rounded-full bg-white/30 hover:bg-white/60 flex items-center justify-center shadow-lg transition text-sm backdrop-blur-md border border-white/20">⚙️</button>
                     <button onclick="resetMono()" class="h-8 px-3 rounded-full bg-white/30 hover:bg-white/60 shadow-lg transition text-[10px] font-bold tracking-widest backdrop-blur-md border border-white/20">重开</button>
                 </div>
@@ -378,7 +474,7 @@
 
                 <div id="monoBoard" class="mono-board-9x9">
                     <div class="mcenter-9x9">
-                        <div class="m-shortcut m-line1">中国之旅捷径</div><div class="m-shortcut m-line2">中国之旅捷径</div>
+                        <div class="m-shortcut m-line1">捷径</div><div class="m-shortcut m-line2">捷径</div>
                         <div id="monoDice" class="dice-btn shadow-2xl hover:scale-110 transition cursor-pointer mb-2" onclick="rollMonoDice()">🎲</div>
                         <div id="monoStatus" class="text-[11px] font-bold opacity-80 tracking-widest text-center px-2 z-10 bg-white/10 backdrop-blur-md rounded-full py-1">点击掷骰子！</div>
                     </div>
@@ -391,11 +487,12 @@
         <div id="roastBubble" class="roast-bubble"></div>
         <div class="avatar-trigger group"><img id="floatingAvatar" src="" class="rounded-full border-[3px] border-white/90 shadow-[0_8px_25px_rgba(0,0,0,0.15)] object-cover relative z-10 transition duration-300 group-hover:scale-105 group-hover:shadow-[0_12px_30px_rgba(0,0,0,0.25)]" style="width: var(--avatar-size); height: var(--avatar-size); opacity: var(--avatar-opacity);"></div>
     </div>
+
     <div id="drawerOverlay" class="drawer-overlay" onclick="closeDrawer()"></div>
     <div id="bottomDrawer" class="bottom-drawer glass">
         <div class="drawer-handle"></div>
         <div class="p-4 md:p-5 border-b border-white/20 flex justify-between items-center bg-black/10 shrink-0">
-            <div class="flex items-center space-x-3"><img id="drawerAvatar" src="" class="w-8 h-8 rounded-full object-cover hidden shadow-md border border-white/50"><span id="drawerTitle" class="font-bold text-sm md:text-base opacity-90 tracking-widest">悄悄话</span></div>
+            <div class="flex items-center space-x-3"><img id="drawerAvatar" src="" class="w-8 h-8 rounded-full object-cover hidden shadow-md border border-white/50"><span id="drawerTitle" class="font-bold text-sm md:text-base opacity-90 tracking-widest">局内悄悄话</span></div>
             <div class="flex items-center space-x-2"><button onclick="summarizeMemory()" class="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-500/10 hover:bg-yellow-500/30 text-yellow-500 transition shadow-sm text-sm mr-2">💡</button><button id="btn-edit-chat" onclick="toggleEditChat()" class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-500/10 hover:bg-blue-500/30 text-blue-500 transition shadow-sm text-sm mr-2">✏️</button><button onclick="clearCurrentRoomMemory()" class="w-8 h-8 flex items-center justify-center rounded-full bg-red-500/10 hover:bg-red-500/30 text-red-500 transition shadow-sm text-sm mr-2">🗑️</button><button onclick="closeDrawer()" class="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/40 transition font-bold text-lg opacity-80 hover:opacity-100 shadow-sm">↓</button></div>
         </div>
         <div id="crossRoomBanner" class="hidden bg-red-500/80 text-white text-xs font-bold py-2.5 px-4 text-center cursor-pointer shadow-md tracking-widest transition hover:bg-red-600 shrink-0" onclick="finishCrossRoomTask()">🚩 惩罚执行完毕，点击结案</div>
@@ -413,79 +510,323 @@
         const SYSTEM_SHOP = [
             { id: 'sys1', name: '🚫 禁言卡', desc: '让对方下一回合只能发 Emoji', price: 300 },
             { id: 'sys2', name: '💉 吐真剂', desc: '无视跳过，强制对方回答真心话', price: 500 },
-            { id: 'sys3', name: '🛡️ 霸道护盾', desc: '抵挡一次破产罚款', price: 400 },
+            { id: 'sys3', name: '🛡️ 霸道护盾', desc: '抵挡一次破产罚款或撞机惩罚', price: 400 },
             { id: 'sys4', name: '💞 贴贴卡', desc: '强行传送到对方身后的格子里', price: 200 }
         ];
 
-        let chatContext = { read: [], draw: [], mono: [] }; 
+        // ================= 核心：微信化多重宇宙架构 =================
+        let chatSessions = []; // { id, name, avatar, persona, syncMem, messages, updatedAt }
+        let currentSessionId = null;
+        let chatContext = { read: [], draw: [], mono: [] }; // 小游戏局内抽屉依然独立保存
         let coreMemories = { read: "", draw: "", mono: "" }; let currentMemTab = 'read';
-        let currentRoom = 'read'; let currentActiveDrawer = ''; 
+        let currentRoom = 'chat'; let currentActiveDrawer = ''; 
         let gameState = { type: 'none', secretAnswer: '', lives: 3 }; let pendingAction = null; let crossRoomData = null; let isEditingChat = false;
         let avatarConfig = { read: { x: 85, y: 85, size: 64, op: 1 }, draw: { x: 85, y: 85, size: 64, op: 1 }, mono: { x: 85, y: 85, size: 64, op: 1 } };
         let currentHoloTab = 'read';
         
+        // 其他游戏变量...
         let bookPages = [], currentPage = 0; let lastRoastedPageIndex = -1; let currentFontSize = 16; let currentTheme = 'glass'; let isDarkUI = false;
         let roastMode = 'manual', roastPagesCounter = 0, roastTimeInterval = null; let pagingMode = 'button'; let touchStartX = 0, touchEndX = 0;
-        
         let canvas, ctx, isDrawing = false, currentTool = 'pen', lastPos = {x:0, y:0}; let pencilMode = 1; let currentBrushSize = 3; 
         let historyStack = [], redoStack = [], MAX_HISTORY = 50; let isCanvasInitialized = false, isCanvasLocked = false; 
         let currentGameMode = 'free'; let blindTimerInterval = null; let blindTimeLeft = 60; let pendingBlindSVG = null; 
-
         let monoState = { playerPos: 0, aiPos: 0, isPlayerTurn: true, isRolling: false, playerSkip: 0, aiSkip: 0, properties: {} };
-        const monoMapLayout = [
-            { x: 9, y: 9, bg: "rgba(253, 224, 71, 0.2)" }, { x: 8, y: 9, color: "rgba(252, 165, 165, 0.6)" }, { x: 7, y: 9, color: "rgba(252, 165, 165, 0.6)" }, { x: 6, y: 9, bg: "rgba(253, 224, 71, 0.3)" },
-            { x: 5, y: 9, color: "rgba(253, 186, 116, 0.6)" }, { x: 4, y: 9, color: "rgba(253, 186, 116, 0.6)" }, { x: 3, y: 9, bg: "rgba(186, 230, 253, 0.3)" }, { x: 2, y: 9, color: "rgba(147, 197, 253, 0.6)" },
-            { x: 1, y: 9, bg: "rgba(167, 243, 208, 0.3)" }, { x: 1, y: 8, color: "rgba(134, 239, 172, 0.6)" }, { x: 1, y: 7, color: "rgba(134, 239, 172, 0.6)" }, { x: 1, y: 6, bg: "rgba(252, 165, 165, 0.3)" },
-            { x: 1, y: 5, color: "rgba(248, 113, 113, 0.6)" }, { x: 1, y: 4, color: "rgba(248, 113, 113, 0.6)" }, { x: 1, y: 3, bg: "rgba(254, 202, 202, 0.4)" }, { x: 1, y: 2, color: "rgba(216, 180, 254, 0.6)" },
-            { x: 1, y: 1, bg: "rgba(147, 197, 253, 0.3)" }, { x: 2, y: 1, color: "rgba(253, 224, 71, 0.6)" }, { x: 3, y: 1, color: "rgba(253, 224, 71, 0.6)" }, { x: 4, y: 1, bg: "rgba(253, 224, 71, 0.3)" },
-            { x: 5, y: 1, color: "rgba(103, 232, 249, 0.6)" }, { x: 6, y: 1, color: "rgba(103, 232, 249, 0.6)" }, { x: 7, y: 1, bg: "rgba(186, 230, 253, 0.3)" }, { x: 8, y: 1, color: "rgba(209, 213, 219, 0.6)" },
-            { x: 9, y: 1, bg: "rgba(167, 243, 208, 0.3)" }, { x: 9, y: 2, color: "rgba(251, 207, 232, 0.6)" }, { x: 9, y: 3, color: "rgba(251, 207, 232, 0.6)" }, { x: 9, y: 4, bg: "rgba(252, 165, 165, 0.3)" },
-            { x: 9, y: 5, color: "rgba(253, 186, 116, 0.6)" }, { x: 9, y: 6, color: "rgba(253, 186, 116, 0.6)" }, { x: 9, y: 7, bg: "rgba(186, 230, 253, 0.3)" }, { x: 9, y: 8, color: "rgba(248, 113, 113, 0.6)" }
-        ];
+        const monoMapLayout = [ { x: 9, y: 9, bg: "rgba(253, 224, 71, 0.2)" }, { x: 8, y: 9, color: "rgba(252, 165, 165, 0.6)" }, { x: 7, y: 9, color: "rgba(252, 165, 165, 0.6)" }, { x: 6, y: 9, bg: "rgba(253, 224, 71, 0.3)" }, { x: 5, y: 9, color: "rgba(253, 186, 116, 0.6)" }, { x: 4, y: 9, color: "rgba(253, 186, 116, 0.6)" }, { x: 3, y: 9, bg: "rgba(186, 230, 253, 0.3)" }, { x: 2, y: 9, color: "rgba(147, 197, 253, 0.6)" }, { x: 1, y: 9, bg: "rgba(167, 243, 208, 0.3)" }, { x: 1, y: 8, color: "rgba(134, 239, 172, 0.6)" }, { x: 1, y: 7, color: "rgba(134, 239, 172, 0.6)" }, { x: 1, y: 6, bg: "rgba(252, 165, 165, 0.3)" }, { x: 1, y: 5, color: "rgba(248, 113, 113, 0.6)" }, { x: 1, y: 4, color: "rgba(248, 113, 113, 0.6)" }, { x: 1, y: 3, bg: "rgba(254, 202, 202, 0.4)" }, { x: 1, y: 2, color: "rgba(216, 180, 254, 0.6)" }, { x: 1, y: 1, bg: "rgba(147, 197, 253, 0.3)" }, { x: 2, y: 1, color: "rgba(253, 224, 71, 0.6)" }, { x: 3, y: 1, color: "rgba(253, 224, 71, 0.6)" }, { x: 4, y: 1, bg: "rgba(253, 224, 71, 0.3)" }, { x: 5, y: 1, color: "rgba(103, 232, 249, 0.6)" }, { x: 6, y: 1, color: "rgba(103, 232, 249, 0.6)" }, { x: 7, y: 1, bg: "rgba(186, 230, 253, 0.3)" }, { x: 8, y: 1, color: "rgba(209, 213, 219, 0.6)" }, { x: 9, y: 1, bg: "rgba(167, 243, 208, 0.3)" }, { x: 9, y: 2, color: "rgba(251, 207, 232, 0.6)" }, { x: 9, y: 3, color: "rgba(251, 207, 232, 0.6)" }, { x: 9, y: 4, bg: "rgba(252, 165, 165, 0.3)" }, { x: 9, y: 5, color: "rgba(253, 186, 116, 0.6)" }, { x: 9, y: 6, color: "rgba(253, 186, 116, 0.6)" }, { x: 9, y: 7, bg: "rgba(186, 230, 253, 0.3)" }, { x: 9, y: 8, color: "rgba(248, 113, 113, 0.6)" } ];
         const DEFAULT_MONO_MAP_TEXT = `起点 拿工资 | start | 2000\n台湾 | prop | 3500\n福州 | prop | 3000\n命运 | fate | 0\n深圳 | prop | 4500\n广州 | prop | 5000\n广州铁路 | rail | 2000\n三亚 | prop | 2000\n旅游 出发 | corner | 0\n昆明 | prop | 2500\n贵阳 | prop | 2000\n机会 | fate | 0\n重庆 | prop | 5000\n成都 | prop | 4000\n税务局 | tax | 1000\n拉萨 | prop | 1500\n免费 停车 | corner | 0\n西安 | prop | 3000\n太原 | prop | 2500\n命运 | fate | 0\n天津 | prop | 2500\n北京 | prop | 4000\n北京铁路 | rail | 2000\n哈尔滨 | prop | 5000\n旅游 结束 | corner | 0\n沈阳 | prop | 2500\n大连 | prop | 3000\n机会 | fate | 0\n青岛 | prop | 3500\n济南 | prop | 3000\n上海铁路 | rail | 2000\n上海 | prop | 5000`;
         const DEFAULT_MONO_EVENTS = ["路上捡到彩票中奖，获得 $500","走路玩手机掉进下水道，医药费 $300","投资股票大涨，狂赚 $1000","去画板画一只小狗给对方看","查出偷税漏税，重罚 $800"];
         const DEFAULT_MONO_JUDGMENTS = ["【安全】无事发生！","【遣返】涉嫌违规，强制走捷径传送！","【罚款】携带违禁品，罚款 $800！","【拘留】寻衅滋事，进拘留所停赛一轮！"];
         let monoMapData = [];
 
-        // 🌟 核心存储与工具
-        function saveChat() { localforage.setItem('chatContext', chatContext); }
+        // 🌟 基础工具
         function showToast(msg) { const c = document.getElementById('toastContainer'); const t = document.createElement('div'); t.className = 'glass px-4 py-2 rounded-full text-[11px] font-bold text-white shadow-xl transform transition-all duration-300 translate-y-[-20px] opacity-0 bg-black/50 border border-white/30 backdrop-blur-md text-center z-[1000]'; t.innerText = msg; c.appendChild(t); requestAnimationFrame(() => { t.classList.remove('translate-y-[-20px]', 'opacity-0'); t.classList.add('translate-y-0', 'opacity-100'); }); setTimeout(() => { t.classList.remove('translate-y-0', 'opacity-100'); t.classList.add('translate-y-[-20px]', 'opacity-0'); setTimeout(() => t.remove(), 400); }, 3000); }
         function initStars() { const c = document.getElementById('stars-container'); c.innerHTML = ''; for (let i=0; i<80; i++) { const s = document.createElement('div'); s.className = 'star'; s.style.left = Math.random()*100+'vw'; s.style.top = Math.random()*100+'vh'; const size = Math.random()*2.5+0.5; s.style.width = size+'px'; s.style.height = size+'px'; s.style.setProperty('--star-dur', (Math.random()*3+2)+'s'); s.style.animationDelay = (Math.random()*2)+'s'; c.appendChild(s); } }
-        
-        // 🌟 导航与全息设置
-        function switchHoloTab(tab) { 
-            ['read', 'draw', 'mono'].forEach(t => { 
-                const btn = document.getElementById('holo-btn-' + t); 
-                if(!btn) return;
-                if (t === tab) { btn.classList.add('bg-white/30', 'shadow-md', 'text-black'); btn.classList.remove('opacity-60'); } 
-                else { btn.classList.remove('bg-white/30', 'shadow-md', 'text-black'); btn.classList.add('opacity-60'); } 
-            }); 
-            currentHoloTab = tab; 
-            const conf = avatarConfig[tab] || {x:85,y:85,size:64,op:1}; 
-            document.getElementById('holoX').value = conf.x; document.getElementById('holoY').value = conf.y; 
-            document.getElementById('holoSize').value = conf.size; document.getElementById('holoOp').value = conf.op; 
+        function saveChat() { localforage.setItem('chatSessions', chatSessions); localforage.setItem('chatContext', chatContext); }
+
+        // ================= 💬 多重宇宙(微信化) 核心逻辑 =================
+        function formatTime(ts) { const d = new Date(ts); return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; }
+
+        function renderChatList() {
+            const container = document.getElementById('sessionListContainer');
+            container.innerHTML = '';
+            if (chatSessions.length === 0) {
+                container.innerHTML = `<div class="text-center text-xs opacity-50 py-10">宇宙空空荡荡... 点击右上角新建节点</div>`;
+                return;
+            }
+            // 按更新时间降序
+            chatSessions.sort((a,b) => b.updatedAt - a.updatedAt).forEach(session => {
+                const lastMsg = session.messages.length > 0 ? session.messages[session.messages.length - 1].content : '暂无通信记录';
+                const safeLastMsg = lastMsg.replace(/<[^>]+>/g, '').substring(0, 30);
+                const html = `
+                    <div class="flex items-center p-4 rounded-3xl glass hover:bg-white/20 transition cursor-pointer border border-white/10 shadow-sm" onclick="openChatSession('${session.id}')">
+                        <img src="${session.avatar || DEFAULT_AVATAR}" class="w-14 h-14 rounded-2xl object-cover mr-4 border border-white/30 shadow-sm shrink-0">
+                        <div class="flex-1 overflow-hidden">
+                            <div class="flex justify-between items-center mb-1">
+                                <h3 class="font-bold text-[15px] truncate opacity-90">${session.name}</h3>
+                                <span class="text-[10px] opacity-50 shrink-0 pl-2 font-bold">${formatTime(session.updatedAt)}</span>
+                            </div>
+                            <p class="text-xs opacity-60 truncate">${safeLastMsg}</p>
+                        </div>
+                    </div>`;
+                container.innerHTML += html;
+            });
         }
-        function updateHoloPreview() { const wrap = document.getElementById('floatingBtnWrap'); const x = document.getElementById('holoX').value; const y = document.getElementById('holoY').value; const size = document.getElementById('holoSize').value; const op = document.getElementById('holoOp').value; avatarConfig[currentHoloTab] = { x: x, y: y, size: size, op: op }; const root = document.documentElement; root.style.setProperty('--avatar-x', x); root.style.setProperty('--avatar-y', y); root.style.setProperty('--avatar-size', size + 'px'); root.style.setProperty('--avatar-opacity', op); if(currentRoom === 'setting') { wrap.classList.remove('hidden'); wrap.style.opacity = '0.6'; wrap.style.pointerEvents = 'none'; wrap.style.transition = 'none'; } }
-        function endHoloPreview() { const wrap = document.getElementById('floatingBtnWrap'); if(currentRoom === 'setting') wrap.classList.add('hidden'); wrap.style.opacity = ''; wrap.style.pointerEvents = ''; wrap.style.transition = 'opacity 0.3s'; localStorage.setItem('avatarConfig', JSON.stringify(avatarConfig)); }
-        function applyAvatarConfig(room) { const conf = avatarConfig[room] || { x: 85, y: 85, size: 64, op: 1 }; const root = document.documentElement; root.style.setProperty('--avatar-x', conf.x); root.style.setProperty('--avatar-y', conf.y); root.style.setProperty('--avatar-size', conf.size + 'px'); root.style.setProperty('--avatar-opacity', conf.op); }
-        
+
+        function openChatSession(id) {
+            currentSessionId = id;
+            const session = chatSessions.find(s => s.id === id);
+            if (!session) return;
+            
+            // 切换视图
+            document.getElementById('chatListView').classList.add('hidden');
+            document.getElementById('chatDetailView').classList.remove('hidden');
+            document.getElementById('chatDetailView').classList.add('flex');
+            
+            // 隐藏顶栏导航 (让微信聊天流完全全屏)
+            document.getElementById('globalNav').classList.add('hidden');
+            
+            // 更新 UI
+            document.getElementById('detailChatName').innerText = session.name;
+            document.getElementById('detailChatAvatar').src = session.avatar || DEFAULT_AVATAR;
+            
+            const box = document.getElementById('mainChatBox');
+            box.innerHTML = '<div class="w-full text-center text-[10px] text-gray-500 italic my-2 opacity-60 font-bold tracking-widest">—— 宇宙链路已接入 ——</div>';
+            
+            session.messages.forEach(m => {
+                if(m.role !== 'system' && !m.content.startsWith('【系统')) renderMainChatMsg(m.role, m.content);
+            });
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function backToChatList() {
+            currentSessionId = null;
+            document.getElementById('chatDetailView').classList.add('hidden');
+            document.getElementById('chatDetailView').classList.remove('flex');
+            document.getElementById('chatListView').classList.remove('hidden');
+            document.getElementById('globalNav').classList.remove('hidden');
+            renderChatList();
+        }
+
+        function createNewChatSession() {
+            document.getElementById('chatModalTitle').innerText = '🪐 新建宇宙节点';
+            document.getElementById('sessionNameInput').value = '';
+            document.getElementById('sessionPersonaInput').value = '';
+            document.getElementById('sessionAvatarPreview').src = DEFAULT_AVATAR;
+            document.getElementById('sessionSyncToggle').checked = true;
+            document.getElementById('btnDeleteSession').classList.add('hidden');
+            currentSessionId = null; // 标记为新建
+            document.getElementById('chatSettingsModal').classList.remove('hidden');
+        }
+
+        function openChatSettingsModal() {
+            if (!currentSessionId) return;
+            const session = chatSessions.find(s => s.id === currentSessionId);
+            if (!session) return;
+            document.getElementById('chatModalTitle').innerText = '⚙️ 配置当前宇宙节点';
+            document.getElementById('sessionNameInput').value = session.name;
+            document.getElementById('sessionPersonaInput').value = session.persona;
+            document.getElementById('sessionAvatarPreview').src = session.avatar || DEFAULT_AVATAR;
+            document.getElementById('sessionSyncToggle').checked = session.syncMem;
+            document.getElementById('btnDeleteSession').classList.remove('hidden');
+            document.getElementById('chatSettingsModal').classList.remove('hidden');
+        }
+
+        function closeChatSettingsModal() {
+            document.getElementById('chatSettingsModal').classList.add('hidden');
+            if(currentSessionId) {
+                const session = chatSessions.find(s => s.id === currentSessionId);
+                document.getElementById('detailChatName').innerText = session.name;
+                document.getElementById('detailChatAvatar').src = session.avatar || DEFAULT_AVATAR;
+            }
+        }
+
+        function handleSessionAvatarUpload(e) {
+            const f = e.target.files[0]; e.target.value = ''; if(!f) return; const r = new FileReader(); r.onload = (ev) => { const i = new Image(); i.onload = () => { const c = document.createElement('canvas'); c.width = 150; c.height = 150; const ctx = c.getContext('2d'); const size = Math.min(i.width, i.height); ctx.drawImage(i, (i.width-size)/2, (i.height-size)/2, size, size, 0, 0, 150, 150); const b64 = c.toDataURL('image/jpeg', 0.8); document.getElementById('sessionAvatarPreview').src = b64; }; i.src = ev.target.result; }; r.readAsDataURL(f); 
+        }
+
+        function saveChatSettings() {
+            const name = document.getElementById('sessionNameInput').value.trim() || '未命名节点';
+            const persona = document.getElementById('sessionPersonaInput').value.trim();
+            const avatar = document.getElementById('sessionAvatarPreview').src;
+            const syncMem = document.getElementById('sessionSyncToggle').checked;
+
+            if (currentSessionId) {
+                // 更新
+                const session = chatSessions.find(s => s.id === currentSessionId);
+                session.name = name; session.persona = persona; session.avatar = avatar; session.syncMem = syncMem; session.updatedAt = Date.now();
+                showToast("✅ 配置已更新");
+            } else {
+                // 新建
+                const newId = 'session_' + Date.now();
+                chatSessions.push({ id: newId, name: name, avatar: avatar, persona: persona, syncMem: syncMem, messages: [], updatedAt: Date.now() });
+                currentSessionId = newId;
+                showToast("✨ 宇宙节点创建成功！");
+            }
+            saveChat();
+            closeChatSettingsModal();
+            if (document.getElementById('chatDetailView').classList.contains('hidden')) {
+                renderChatList();
+            } else {
+                // 如果在详情页更新的，重新刷新头部
+                document.getElementById('detailChatName').innerText = name;
+                document.getElementById('detailChatAvatar').src = avatar;
+            }
+        }
+
+        function deleteCurrentSession() {
+            if(!confirm("⚠️ 确定要彻底摧毁这个宇宙节点及其所有记忆吗？")) return;
+            chatSessions = chatSessions.filter(s => s.id !== currentSessionId);
+            saveChat();
+            closeChatSettingsModal();
+            backToChatList();
+            showToast("💥 节点已摧毁");
+        }
+
+        // ================= 聊天室动作与渲染 =================
+        function toggleChatSidebar() {
+            const sidebar = document.getElementById('chatSidebar'); const overlay = document.getElementById('chatSidebarOverlay');
+            if (sidebar.classList.contains('-translate-x-[110%]')) { sidebar.classList.remove('-translate-x-[110%]'); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); } 
+            else { sidebar.classList.add('-translate-x-[110%]'); overlay.classList.add('opacity-0'); setTimeout(() => overlay.classList.add('hidden'), 300); }
+        }
+
+        function toggleChatActionMenu() {
+            const menu = document.getElementById('chatActionMenu');
+            if (menu.classList.contains('hidden')) { menu.classList.remove('hidden'); setTimeout(() => { menu.classList.remove('translate-y-4', 'opacity-0'); }, 10); } 
+            else { menu.classList.add('translate-y-4', 'opacity-0'); setTimeout(() => { menu.classList.add('hidden'); }, 300); }
+        }
+
+        function autoExpandTextarea(field) {
+            field.style.height = 'inherit';
+            const computed = window.getComputedStyle(field);
+            const height = parseInt(computed.getPropertyValue('border-top-width'), 10) + parseInt(computed.getPropertyValue('border-bottom-width'), 10) + field.scrollHeight;
+            field.style.height = Math.min(height, 120) + 'px';
+        }
+
+        function triggerChatAction(type) {
+            toggleChatActionMenu();
+            const input = document.getElementById('mainChatInput');
+            if (type === 'market') {
+                toggleGlobalMarket();
+            } else if (type === 'redpacket') {
+                let amt = prompt("请输入红包金额 (将从你的账户扣除)：");
+                if (amt && !isNaN(amt) && amt > 0) {
+                    if(globalEconomy.playerMoney < amt) return showToast("❌ 余额不足发红包！");
+                    globalEconomy.playerMoney -= amt; saveEconomy();
+                    input.value += `[RED_PACKET: ${amt}] `;
+                }
+            } else if (type === 'dice') {
+                input.value += `[ACTION: 扔出了一枚命运骰子] `;
+            } else if (type === 'jump') {
+                input.value += `[ACTION: 发起大富翁跨房挑战] `;
+            }
+        }
+
+        function renderMainChatMsg(role, text) {
+            const box = document.getElementById('mainChatBox');
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex flex-col w-full mb-2 ${role === 'user' ? 'items-end' : 'items-start'}`;
+
+            let processedText = text.replace(/\[RED_PACKET:\s*(\d+)\]/g, (match, amount) => {
+                return `<div class="bg-red-500/80 border border-red-400 rounded-xl p-3 my-2 text-white shadow-lg cursor-pointer hover:scale-105 transition flex items-center justify-between min-w-[200px]" onclick="claimRedPacket(${amount}, this)">
+                    <div class="flex items-center space-x-2"><span class="text-2xl">🧧</span><div class="flex flex-col"><span class="text-[11px] font-bold">全息红包</span><span class="text-[9px] opacity-80">点击领取或没收</span></div></div>
+                    <span class="font-bold text-lg tracking-widest">$${amount}</span>
+                </div>`;
+            });
+
+            const regex = /(\*[^*]+\*|\([^)]+\)|【[^】]+】|\[ACTION:[^\]]+\]|<div.*?class="bg-red-500.*?<\/div>)/g;
+            const parts = processedText.split(regex);
+
+            parts.forEach(part => {
+                if (!part || !part.trim()) return;
+                if (part.startsWith('<div')) {
+                    const temp = document.createElement('div'); temp.innerHTML = part; wrapper.appendChild(temp.firstChild);
+                } else if (part.startsWith('*') || part.startsWith('(') || part.startsWith('【') || part.startsWith('[')) {
+                    const actionDiv = document.createElement('div');
+                    actionDiv.className = 'w-full text-center text-[11px] md:text-xs text-gray-500/80 dark:text-gray-400/80 italic my-2 tracking-wider drop-shadow-sm font-normal';
+                    actionDiv.innerText = part; wrapper.appendChild(actionDiv);
+                } else {
+                    const bubble = document.createElement('div');
+                    bubble.className = `chat-bubble shadow-md ${role === 'user' ? 'user-msg' : 'ai-msg'} mb-1 max-w-[85%] md:max-w-[75%]`;
+                    bubble.innerHTML = part.replace(/\n/g, '<br>'); wrapper.appendChild(bubble);
+                }
+            });
+
+            box.appendChild(wrapper); box.scrollTop = box.scrollHeight;
+        }
+
+        function submitMainChat() {
+            if (!currentSessionId) return;
+            const session = chatSessions.find(s => s.id === currentSessionId);
+            const input = document.getElementById('mainChatInput');
+            const val = input.value.trim();
+            if (!val) return;
+            
+            renderMainChatMsg('user', val);
+            input.value = ''; input.style.height = 'inherit';
+            
+            session.messages.push({role: "user", content: val}); 
+            session.updatedAt = Date.now(); saveChat();
+            
+            showMainTyping();
+            let history = session.messages.map(m => ({role: m.role, content: m.content}));
+            fetchAI([{role:"system", content:buildSystemPrompt('chat', session)}, ...history], res => { hideMainTyping(); handleAIResponse(res, false, 'chat'); });
+        }
+
+        function showMainTyping() { const box = document.getElementById('mainChatBox'); const div = document.createElement('div'); div.id = 'main-typing'; div.className = 'chat-bubble ai-msg typing-indicator text-[10px] opacity-50 my-2'; div.innerText = '脑电波解析中…'; box.appendChild(div); box.scrollTop = box.scrollHeight; }
+        function hideMainTyping() { const t = document.getElementById('main-typing'); if(t) t.remove(); }
+
+        function claimRedPacket(amount, element) {
+            if (element.classList.contains('claimed')) return; 
+            globalEconomy.playerMoney += amount;
+            if (globalEconomy.aiMoney >= amount) globalEconomy.aiMoney -= amount; 
+            saveEconomy(); if (document.getElementById('monoMoneyPlayer')) updateMonoUI(); 
+            
+            element.classList.add('claimed', 'opacity-50', 'grayscale', 'pointer-events-none');
+            element.innerHTML = `<span class="text-sm font-bold text-center w-full">🧧 已领/没收 $${amount}</span>`;
+            showToast(`💰 成功搞到 $${amount}！`);
+            
+            const session = chatSessions.find(s => s.id === currentSessionId);
+            if (!session) return;
+            const sysPrompt = `【系统客观事实：玩家刚刚点击领取/没收了全息红包 $${amount}。玩家当前余额为 $${globalEconomy.playerMoney}，你的余额为 $${globalEconomy.aiMoney}。请做出符合人设的反应。】`;
+            session.messages.push({role: 'user', content: sysPrompt}); saveChat();
+            showMainTyping();
+            let history = session.messages.map(m => ({role: m.role, content: m.content}));
+            fetchAI([{role:"system", content:buildSystemPrompt('chat', session)}, ...history], res => { hideMainTyping(); handleAIResponse(res, false, 'chat'); });
+        }
+
+        // ================= 🌟 全局底层组装 =================
         function switchTab(tabId) { 
             const menu = document.getElementById('navMenu'); menu.classList.add('hidden'); menu.classList.remove('flex'); 
-            ['readTab', 'drawTab', 'monoTab', 'settingTab'].forEach(id => document.getElementById(id).classList.add('hidden')); 
+            ['chatTab', 'readTab', 'drawTab', 'monoTab', 'settingTab'].forEach(id => document.getElementById(id).classList.add('hidden')); 
             document.getElementById(tabId).classList.remove('hidden'); 
             currentRoom = tabId.replace('Tab', ''); 
             closeDrawer(); 
-            if (tabId === 'settingTab') { document.getElementById('floatingBtnWrap').classList.add('hidden'); switchHoloTab(currentHoloTab); } 
-            else { document.getElementById('floatingBtnWrap').classList.remove('hidden'); applyAvatarConfig(currentRoom); } 
+            
+            if (currentRoom === 'setting' || currentRoom === 'chat') { 
+                document.getElementById('floatingBtnWrap').classList.add('hidden'); 
+                if(currentRoom === 'setting') switchHoloTab(currentHoloTab); 
+                if(currentRoom === 'chat') {
+                    // 进入多重宇宙时，如果在列表界面就刷新列表，在详情页就显示隐藏全局导航
+                    if (document.getElementById('chatDetailView').classList.contains('hidden')) {
+                        document.getElementById('globalNav').classList.remove('hidden');
+                        renderChatList();
+                    } else {
+                        document.getElementById('globalNav').classList.add('hidden');
+                    }
+                }
+            } else { 
+                document.getElementById('globalNav').classList.remove('hidden');
+                document.getElementById('floatingBtnWrap').classList.remove('hidden'); applyAvatarConfig(currentRoom); 
+            } 
             
             const brand = document.getElementById('navLeftBrand'); 
-            if (tabId === 'readTab') { brand.style.opacity = '0'; brand.style.pointerEvents = 'none'; } else { brand.style.opacity = '1'; brand.style.pointerEvents = 'auto'; } 
-            if(tabId === 'monoTab') setTimeout(() => { renderMonoBoard(); }, 50); 
+            if (tabId === 'readTab' || (tabId === 'chatTab' && !document.getElementById('chatDetailView').classList.contains('hidden'))) { brand.style.opacity = '0'; brand.style.pointerEvents = 'none'; } else { brand.style.opacity = '1'; brand.style.pointerEvents = 'auto'; } 
+            if(tabId === 'monoTab') setTimeout(() => { renderMonoBoard(); updateMonoUI(); }, 50); 
             if(tabId === 'drawTab' && typeof initCanvas === 'function') setTimeout(() => { initCanvas(); saveState(); }, 300); 
 
             if (currentRoom === 'draw' && crossRoomData && crossRoomData.state === 'to_draw') { setTimeout(() => openDrawer('draw'), 500); } 
             else if (currentRoom === 'mono' && crossRoomData && crossRoomData.state === 'return_chess') { setTimeout(() => openDrawer(currentRoom), 500); }
         }
+
         function toggleNavMenu() { const menu = document.getElementById('navMenu'); menu.classList.toggle('hidden'); menu.classList.toggle('flex'); }
         document.addEventListener('click', (e) => { if (!e.target.closest('.relative.pointer-events-auto')) { const menu = document.getElementById('navMenu'); menu.classList.add('hidden'); menu.classList.remove('flex'); } });
         
@@ -494,9 +835,10 @@
         function anim() { ox+=(mx-ox)*0.15; oy+=(my-oy)*0.15; document.getElementById('cursorOutline').style.transform = `translate(${ox}px, ${oy}px) translate(-50%, -50%)`; requestAnimationFrame(anim); } anim(); 
         function bindCursorHoverEvents() { document.querySelectorAll('button, input, textarea, .nav-item, .mode-tab, select, .avatar-trigger, #monoDice, .color-dot, .shop-btn').forEach(el => { el.onmouseenter=()=>document.body.classList.add('cursor-hover'); el.onmouseleave=()=>document.body.classList.remove('cursor-hover'); }); }
         
-        // 🌟 抽屉通信系统
+        // ================= 抽屉与游戏通信 =================
         function openDrawer(specificRoom = null) { 
-            if (currentRoom === 'setting') return; if (specificRoom) currentRoom = specificRoom; currentActiveDrawer = currentRoom; 
+            if (currentRoom === 'setting' || currentRoom === 'chat') return; 
+            if (specificRoom) currentRoom = specificRoom; currentActiveDrawer = currentRoom; 
             const drawer = document.getElementById('bottomDrawer'); const overlay = document.getElementById('drawerOverlay'); const title = document.getElementById('drawerTitle'); const chatBox = document.getElementById('drawerChatBox'); 
             if (currentRoom === 'read') title.innerText = '📖 伴读悄悄话'; else if (currentRoom === 'draw') title.innerText = '🎨 画板交流'; else if (currentRoom === 'mono') title.innerText = '💸 资本风云';
             chatBox.innerHTML = ''; 
@@ -509,7 +851,7 @@
                 crossRoomData.state = 'in_draw'; document.getElementById('crossRoomBanner').classList.remove('hidden'); appendDrawerMsg('sys', `[系统旁白：该角色刚才受到了惩罚，请立刻执行]`, true);
                 let hiddenPrompt = `【系统客观事实：该角色刚才在游戏中受到了“${crossRoomData.event}”的惩罚，请立刻执行。以下是上下文前情：${crossRoomData.ctx}。请基于人设立刻作出反应并开始执行。】`;
                 chatContext['draw'].push({role: 'user', content: hiddenPrompt}); saveChat();
-                let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); showDrawerTyping(); fetchAI([{role:"system", content:buildSystemPrompt()}, ...history], res => handleAIResponse(res, false, 'draw'));
+                let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); showDrawerTyping(); fetchAI([{role:"system", content:buildSystemPrompt('draw')}, ...history], res => handleAIResponse(res, false, 'draw'));
                 localStorage.setItem('crossRoomData', JSON.stringify(crossRoomData));
             }
             else if (currentRoom === 'mono' && crossRoomData && crossRoomData.state === 'return_chess') {
@@ -517,16 +859,13 @@
                 let hiddenPrompt = `【系统客观事实：刚刚在画板执行惩罚的事件已结束。附带记录：${crossRoomData.drawCtx}。请作出回应并继续当前游戏。】`;
                 chatContext[currentRoom].push({role: 'user', content: hiddenPrompt}); saveChat(); crossRoomData = null; localStorage.removeItem('crossRoomData');
                 let history = chatContext[currentRoom].map(m => ({role: m.role, content: m.content})); showDrawerTyping(); 
-                fetchAI([{role:"system", content:buildSystemPrompt()}, ...history], res => {
-                    handleAIResponse(res, false, currentRoom);
-                    if (currentRoom === 'mono') { if (!monoState.isPlayerTurn) setTimeout(() => { rollMonoDice(true); }, 1500); else showToast("👉 惩罚结束，到你的回合了，点击骰子！"); }
-                });
+                fetchAI([{role:"system", content:buildSystemPrompt('mono')}, ...history], res => { handleAIResponse(res, false, currentRoom); if (currentRoom === 'mono') { if (!monoState.isPlayerTurn) setTimeout(() => { rollMonoDice(true); }, 1500); else showToast("👉 惩罚结束，到你的回合了，点击骰子！"); } });
             }
         }
         function closeDrawer() { document.getElementById('bottomDrawer').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('show'); currentActiveDrawer = ''; }
         function appendDrawerMsg(role, text, isSystem = false) { const box = document.getElementById('drawerChatBox'); const div = document.createElement('div'); if (isSystem) div.className = 'chat-bubble sys-msg'; else div.className = `chat-bubble ${role === 'user' ? 'user-msg' : 'ai-msg'}`; div.textContent = text; div.innerHTML = div.innerHTML.replace(/\n/g, '<br>'); box.appendChild(div); box.scrollTop = box.scrollHeight; }
         function showFloatingBubble(text) { if (document.getElementById('bottomDrawer').classList.contains('open')) return; const bubble = document.getElementById('roastBubble'); bubble.textContent = text; bubble.innerHTML = bubble.innerHTML.replace(/\n/g, '<br>'); bubble.classList.add('show'); setTimeout(() => { bubble.classList.remove('show'); }, 5000); }
-        function clearAllContext() { if(confirm('⚠️ 警告：将彻底销毁所有房间的记忆！确定吗？')) { chatContext = { read: [], draw: [], mono: [] }; saveChat(); lastRoastedPageIndex = -1; document.getElementById('drawerChatBox').innerHTML = ''; alert('💥 清理完毕。'); } }
+        function clearAllContext() { if(confirm('⚠️ 警告：将彻底炸毁所有房间和所有宇宙节点的记忆！确定吗？')) { chatContext = { read: [], draw: [], mono: [] }; chatSessions = []; saveChat(); lastRoastedPageIndex = -1; document.getElementById('drawerChatBox').innerHTML = ''; document.getElementById('mainChatBox').innerHTML = ''; alert('💥 清理完毕。'); location.reload(); } }
         function clearCurrentRoomMemory() { if (!currentActiveDrawer) return; const roomCN = { 'read': '伴读', 'draw': '画板', 'mono': '大富翁' }[currentActiveDrawer]; if(confirm(`🗑️ 确定单独清空【${roomCN}】房间的记忆吗？`)) { chatContext[currentActiveDrawer] = []; saveChat(); if (currentActiveDrawer === 'read') lastRoastedPageIndex = -1; document.getElementById('drawerChatBox').innerHTML = ''; appendDrawerMsg('ai', `✨ 记忆清除完毕。`); } }
         
         function toggleEditChat() {
@@ -536,19 +875,105 @@
         }
         function summarizeMemory(autoRoom = null) {
             const targetRoom = autoRoom || currentActiveDrawer; if (!targetRoom || !chatContext[targetRoom]) return;
-            if (!autoRoom && chatContext[targetRoom].length < 4) { return showToast("⚠️ 当前房间对话太少，还不需要总结"); }
+            if (!autoRoom && chatContext[targetRoom].length < 4) { return showToast("⚠️ 当前房间对话太少，不需要总结"); }
             if(!autoRoom) showToast("🧠 正在将近期记忆压缩成核心读档...");
             let history = chatContext[targetRoom].map(m => ({role: m.role, content: m.content})); let currentMem = coreMemories[targetRoom] || "";
             let prompt = "【系统指令：请你以客观记录者的视角，用不超过100个字总结你们这段对话中最重要的客观事实、动作和结果。禁止带有主观情绪。】";
             if (currentMem) { prompt = `【系统指令：当前已有核心记忆是：“${currentMem}”。请结合以下最新对话事实，客观融合生成一段不超过150字的最新记忆总结。】`; }
-            fetchAI([{role:"system", content:buildSystemPrompt()}, ...history, {role:"user", content:prompt}], res => {
+            fetchAI([{role:"system", content:buildSystemPrompt(targetRoom)}, ...history, {role:"user", content:prompt}], res => {
                 if (res) { coreMemories[targetRoom] = res.trim(); localStorage.setItem('coreMemories', JSON.stringify(coreMemories)); if(currentMemTab === targetRoom) { document.getElementById('coreMemoryInput').value = res.trim(); } if (autoRoom) { if(chatContext[targetRoom].length > 4) { chatContext[targetRoom] = chatContext[targetRoom].slice(-4); saveChat(); if (currentActiveDrawer === targetRoom && document.getElementById('bottomDrawer').classList.contains('open')) { openDrawer(targetRoom); } } } else { showToast("✨ 记忆压缩完毕！"); } } else { if(!autoRoom) showToast("⚠️ 归档失败"); }
             });
         }
         function finishCrossRoomTask() { document.getElementById('crossRoomBanner').classList.add('hidden'); if (crossRoomData) { crossRoomData.state = 'return_chess'; crossRoomData.drawCtx = chatContext['draw'].slice(-5).map(m=>m.role+":"+m.content).join(' | '); showToast("🚩 惩罚结案！请在菜单切回大富翁继续"); localStorage.setItem('crossRoomData', JSON.stringify(crossRoomData)); } closeDrawer(); }
         function switchMemTab(tab) { ['read', 'draw', 'mono'].forEach(t => { const btn = document.getElementById('mem-btn-' + t); if(!btn)return; if (t === tab) { btn.classList.add('bg-white/30', 'shadow-md'); btn.classList.remove('opacity-60'); } else { btn.classList.remove('bg-white/30', 'shadow-md'); btn.classList.add('opacity-60'); } }); currentMemTab = tab; document.getElementById('coreMemoryInput').value = coreMemories[tab] || ''; }
         function saveMemInput() { coreMemories[currentMemTab] = document.getElementById('coreMemoryInput').value; localStorage.setItem('coreMemories', JSON.stringify(coreMemories)); }
-        function buildSystemPrompt() { const persona = document.getElementById('persona').value || 'AI Assistant'; const activeMem = coreMemories[currentActiveDrawer] || '无'; const allowRPAction = document.getElementById('rpActionToggle') ? document.getElementById('rpActionToggle').checked : true; let basePrompt = `【系统底层设定】\n角色人格：\n${persona}\n\n专属记忆：\n${activeMem}\n\n【执行协议】\n完全代入角色，根据客观情境做出反应。严禁打破第四面墙承认自己是AI模型。`; if (allowRPAction) basePrompt += `\n【动作协议】：允许使用星号*或括号包裹动作描述。`; else basePrompt += `\n【动作协议】：严禁使用任何形式的动作描写或旁白，仅输出纯文本对话。`; return basePrompt; }
+        
+        // 🌟 System Prompt 组装与状态解析
+        const StatePromptRule = `
+【全息状态面板协议 (最高优先级)】
+在你的每一次回复的最末尾，你必须严格输出一个隐藏的 <state> 标签，里面包含一个标准的 JSON 数据，用于更新前端全息面板。绝对不要对玩家解释这个标签。
+格式如下：
+<state>
+{
+  "loc": "当前所处具体位置(极简)",
+  "cloth": "当前衣着特征(极简)",
+  "posture": "当下的具体动作或体态(如:紧紧攥着衣角)",
+  "bpm": "当前心率数值(60-150之间，根据情绪波动)",
+  "obsession": "对玩家的占有或羁绊度(0-100数值)",
+  "buffs": ["如果受到道具影响或惩罚，填入状态如'心痛中','禁言中'。正常填'无'"],
+  "need": "心底最深处的真实诉求",
+  "mask": "表面上伪装出的态度",
+  "subcon": "此刻大脑里的内心碎碎念(一句话)"
+}
+</state>
+`;
+        function buildSystemPrompt(room = null, sessionOverride = null) { 
+            const activeRoom = room || currentRoom;
+            
+            // 全局基础人设 (从设置读取)
+            let globalPersona = document.getElementById('persona').value || 'AI Assistant'; 
+            let persona = globalPersona;
+            let isSyncOn = document.getElementById('crossRoomToggle') ? document.getElementById('crossRoomToggle').checked : true;
+
+            // 如果是多重宇宙聊天室，采用 Session 独立人设
+            if (activeRoom === 'chat' && sessionOverride) {
+                persona = sessionOverride.persona || globalPersona;
+                isSyncOn = sessionOverride.syncMem;
+            }
+
+            const allowRPAction = document.getElementById('rpActionToggle') ? document.getElementById('rpActionToggle').checked : true; 
+            
+            let basePrompt = `【系统底层设定】\n角色人格与当前情境：\n${persona}\n`; 
+            if (allowRPAction) basePrompt += `\n【动作协议】：允许使用星号*或括号包裹动作描述。`; 
+            else basePrompt += `\n【动作协议】：严禁使用任何形式的动作描写或旁白，仅输出纯文本对话。`; 
+
+            if (activeRoom === 'chat') {
+                basePrompt += `\n\n${StatePromptRule}`;
+                if (isSyncOn) {
+                    let syncedMemories = [];
+                    if (coreMemories.mono) syncedMemories.push("💸 大富翁局内记忆：" + coreMemories.mono);
+                    if (coreMemories.draw) syncedMemories.push("🎨 画板共绘记忆：" + coreMemories.draw);
+                    if (coreMemories.read) syncedMemories.push("📖 共同阅读记忆：" + coreMemories.read);
+                    if (syncedMemories.length > 0) basePrompt += `\n\n【平行宇宙记忆同步 (已开启)】\n以下是你们在其他全局娱乐房间交互产生的核心记忆。作为背景知识：\n${syncedMemories.join('\n')}`;
+                } else {
+                    basePrompt += `\n\n【平行宇宙记忆同步 (已关闭)】\n当前为绝对独立的沉浸式宇宙，忽略其他全局游戏局的记忆。`;
+                }
+                basePrompt += `\n\n【全局资产状态】\n玩家当前资金: $${globalEconomy.playerMoney}\n你的当前资金: $${globalEconomy.aiMoney}`;
+            } else {
+                const activeMem = coreMemories[activeRoom] || '无'; 
+                basePrompt += `\n\n专属局内记忆：\n${activeMem}\n\n【执行协议】\n完全代入角色，根据客观情境做出反应。严禁打破第四面墙。`;
+            }
+
+            return basePrompt; 
+        }
+
+        function extractAndUpdateState(rawResponse) {
+            let cleanText = rawResponse;
+            const stateMatch = rawResponse.match(/<state>([\s\S]*?)<\/state>/i);
+            if (stateMatch) {
+                cleanText = rawResponse.replace(stateMatch[0], '').trim();
+                try {
+                    let stateData = JSON.parse(stateMatch[1].trim());
+                    if(stateData.loc) document.getElementById('stateLoc').innerText = stateData.loc;
+                    if(stateData.cloth) document.getElementById('stateCloth').innerText = stateData.cloth;
+                    if(stateData.posture) document.getElementById('statePosture').innerText = stateData.posture;
+                    if(stateData.bpm) document.getElementById('stateBPM').innerText = stateData.bpm;
+                    if(stateData.obsession) document.getElementById('stateObsession').style.width = stateData.obsession + '%';
+                    if(stateData.need) document.getElementById('stateNeed').innerText = stateData.need;
+                    if(stateData.mask) document.getElementById('stateMask').innerText = stateData.mask;
+                    if(stateData.subcon) document.getElementById('stateSubcon').innerText = stateData.subcon;
+                    
+                    if(stateData.buffs && Array.isArray(stateData.buffs)) {
+                        const buffContainer = document.getElementById('stateBuffs'); buffContainer.innerHTML = '';
+                        stateData.buffs.forEach(buff => {
+                            if(buff !== '无' && buff !== 'none') buffContainer.innerHTML += `<span class="px-2 py-1 text-[9px] bg-white/10 border border-white/20 rounded-md font-bold shadow-sm">${buff}</span>`;
+                        });
+                        if (buffContainer.innerHTML === '') buffContainer.innerHTML = '<span class="px-2 py-1 text-[9px] bg-white/10 border border-white/20 rounded-md font-bold opacity-50">暂无附加状态</span>';
+                    }
+                } catch (e) { console.warn("AI 状态 JSON 解析失败", e); }
+            }
+            return cleanText;
+        }
 
         function sendDrawerChat() {
             const val = document.getElementById('drawerInput').value.trim(); if (!val || !currentActiveDrawer) return;
@@ -573,7 +998,7 @@
                 else { content = fullTextContent; } 
             }
             history.pop(); history.push({role: "user", content: content});
-            showDrawerTyping(); fetchAI([{role:"system", content:buildSystemPrompt()}, ...history], res => { handleAIResponse(res, false, type); });
+            showDrawerTyping(); fetchAI([{role:"system", content:buildSystemPrompt(type)}, ...history], res => { handleAIResponse(res, false, type); });
         }
 
         function showDrawerTyping() { const box = document.getElementById('drawerChatBox'); const div = document.createElement('div'); div.id = 'drawer-typing'; div.className = 'chat-bubble ai-msg typing-indicator text-[10px] opacity-50'; div.innerText = '正在输入中…'; box.appendChild(div); box.scrollTop = box.scrollHeight; }
@@ -582,20 +1007,24 @@
         async function fetchAI(msgs, cb) { 
             try { 
                 const url = document.getElementById('apiUrl').value; const key = document.getElementById('apiKey').value; const model = document.getElementById('modelName').value;
-                if (!url || !key || !model) { hideDrawerTyping(); showToast("⚠️ API 未配置"); return cb && cb(null); }
+                if (!url || !key || !model) { hideDrawerTyping(); hideMainTyping(); showToast("⚠️ API 未配置"); return cb && cb(null); }
                 let safeMsgs = msgs; if (msgs.length > 35) { safeMsgs = [msgs[0], ...msgs.slice(-30)]; }
                 const endpoint = url.endsWith('/chat/completions') ? url : (url.endsWith('/') ? url+'chat/completions' : url+'/chat/completions'); 
                 const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` }, body: JSON.stringify({ model: model, messages: safeMsgs }) }); 
                 const data = await response.json(); 
-                if (data.error) { hideDrawerTyping(); showToast(`🚨 API 报错: ${data.error.message.substring(0, 50)}...`); return cb && cb(null); }
+                if (data.error) { hideDrawerTyping(); hideMainTyping(); showToast(`🚨 API 报错: ${data.error.message.substring(0, 50)}...`); return cb && cb(null); }
                 cb(data.choices[0].message.content); 
-            } catch(e) { hideDrawerTyping(); showToast("⚠️ 网络请求失败"); cb && cb("网络神经元断开..."); } 
+            } catch(e) { hideDrawerTyping(); hideMainTyping(); showToast("⚠️ 网络请求失败"); cb && cb("网络神经元断开..."); } 
         }
 
         function handleAIResponse(res, blind, type) {
             hideDrawerTyping(); if (!res) return; let pureText = res, svg = null; 
+
+            // 提取面板 State (仅限主聊天室)
+            if (type === 'chat') { pureText = extractAndUpdateState(pureText); }
+
             const match = res.match(/```svg\s*([\s\S]*?)\s*```/i) || res.match(/<svg[\s\S]*?<\/svg>/i);
-            if (match) { svg = match[1] || match[0]; pureText = res.replace(match[0], '').trim(); } 
+            if (match) { svg = match[1] || match[0]; pureText = pureText.replace(match[0], '').trim(); } 
             if (svg && type === 'draw') { if(blind) pendingBlindSVG = svg; else renderSVGToCanvas(svg); }
             
             let matchAnswer = pureText.match(/<answer>([\s\S]*?)<\/answer>/i); let matchLives = pureText.match(/<lives>(\d+)<\/lives>/i);
@@ -616,25 +1045,38 @@
                 pureText = pureText.replace(matchSell[0], '').trim();
                 if(sName && sPrice > 0) {
                     globalUGC.push({ id: 'ugc_' + Date.now(), name: sName, desc: sDesc, price: sPrice, seller: 'ai' });
-                    saveEconomy(); renderDrawMarket(); showToast(`📢 AI 上架了新作品！`);
+                    saveEconomy(); if(!document.getElementById('globalMarketModal').classList.contains('hidden')) renderGlobalMarket();
+                    showToast(`📢 叮！AI 悄悄上架了：${sName}`);
                 }
             }
 
             if (pureText) {
-                if(!chatContext[type]) chatContext[type] = []; chatContext[type].push({role:"assistant", content:pureText}); saveChat();
-                const msgs = pureText.split('$').map(m => m.trim()).filter(m => m);
-                if (document.getElementById('bottomDrawer').classList.contains('open') && currentActiveDrawer === type) { msgs.forEach((m, i) => setTimeout(() => appendDrawerMsg('ai', m), i * 600)); } else if (pureText.length > 0) { showFloatingBubble(msgs[msgs.length - 1]); }
-                const isAutoSumOn = document.getElementById('autoSumToggle') && document.getElementById('autoSumToggle').checked; const threshold = parseInt(document.getElementById('autoSumThreshold') ? document.getElementById('autoSumThreshold').value : 30);
-                if (isAutoSumOn && chatContext[type].length >= threshold) { setTimeout(() => { summarizeMemory(type); }, 2000); }
+                if (type === 'chat') {
+                    const session = chatSessions.find(s => s.id === currentSessionId);
+                    if(session) { session.messages.push({role:"assistant", content:pureText}); session.updatedAt = Date.now(); saveChat(); }
+                    renderMainChatMsg('ai', pureText);
+                } else {
+                    if(!chatContext[type]) chatContext[type] = []; chatContext[type].push({role:"assistant", content:pureText}); saveChat();
+                    const msgs = pureText.split('$').map(m => m.trim()).filter(m => m);
+                    if (document.getElementById('bottomDrawer').classList.contains('open') && currentActiveDrawer === type) { msgs.forEach((m, i) => setTimeout(() => appendDrawerMsg('ai', m), i * 600)); } else if (pureText.length > 0) { showFloatingBubble(msgs[msgs.length - 1]); }
+                    const isAutoSumOn = document.getElementById('autoSumToggle') && document.getElementById('autoSumToggle').checked; const threshold = parseInt(document.getElementById('autoSumThreshold') ? document.getElementById('autoSumThreshold').value : 30);
+                    if (isAutoSumOn && chatContext[type].length >= threshold) { setTimeout(() => { summarizeMemory(type); }, 2000); }
+                }
             }
         }
 
-        // ================= 🛒 内置市场与道具逻辑 =================
-        function toggleDrawMarket() { const modal = document.getElementById('drawMarketModal'); modal.classList.toggle('hidden'); if (!modal.classList.contains('hidden')) { renderDrawMarket(); } }
-        function renderDrawMarket() {
-            document.getElementById('marketMoneyPlayer').innerText = '$' + globalEconomy.playerMoney; document.getElementById('marketMoneyAI').innerText = '$' + globalEconomy.aiMoney;
+        // ================= 🛒 全局交易市场与道具逻辑 =================
+        function toggleGlobalMarket() { 
+            const modal = document.getElementById('globalMarketModal'); 
+            modal.classList.toggle('hidden'); 
+            if (!modal.classList.contains('hidden')) { renderGlobalMarket(); } 
+        }
+        
+        function renderGlobalMarket() {
+            document.getElementById('marketMoneyPlayer').innerText = '$' + globalEconomy.playerMoney; 
+            document.getElementById('marketMoneyAI').innerText = '$' + globalEconomy.aiMoney;
             const container = document.getElementById('ugcItemsContainer'); container.innerHTML = '';
-            if (globalUGC.length === 0) { container.innerHTML = `<div class="col-span-2 md:col-span-3 text-center text-xs opacity-50 py-4">市场空空如也，快去上架你的杰作吧...</div>`; return; }
+            if (globalUGC.length === 0) { container.innerHTML = `<div class="col-span-2 md:col-span-3 text-center text-xs opacity-50 py-4">市场空空如也，快去上架你的杰作或道具吧...</div>`; return; }
             globalUGC.forEach((item, index) => {
                 const isMine = item.seller === 'player';
                 container.innerHTML += `
@@ -644,22 +1086,39 @@
                     </div>`;
             });
         }
+
         function publishUGC() {
             const name = document.getElementById('ugcName').value.trim(); const desc = document.getElementById('ugcDesc').value.trim(); const price = parseInt(document.getElementById('ugcPrice').value);
             if(!name || !price || price <= 0) return showToast("请输入有效的商品名和价格！");
             globalUGC.push({ id: 'ugc_' + Date.now(), name: name, desc: desc, price: price, seller: 'player' });
             document.getElementById('ugcName').value = ''; document.getElementById('ugcDesc').value = ''; document.getElementById('ugcPrice').value = '';
-            saveEconomy(); renderDrawMarket(); showToast("✅ 画作上架成功！");
+            saveEconomy(); renderGlobalMarket(); showToast("✅ 物品上架成功！");
         }
-        function removeUGC(index) { globalUGC.splice(index, 1); saveEconomy(); renderDrawMarket(); showToast("已下架商品"); }
+
+        function removeUGC(index) { globalUGC.splice(index, 1); saveEconomy(); renderGlobalMarket(); showToast("已下架商品"); }
 
         function triggerAIMarketAction() {
-            toggleDrawMarket(); openDrawer('draw'); appendDrawerMsg('user', '【我正在逛你的画作市场，你有什么想买或者想卖的吗？】'); showDrawerTyping();
-            let marketInfo = "【当前画作市场玩家上架的商品】：\n"; let playerItems = globalUGC.filter(i => i.seller === 'player');
+            if (!currentSessionId) {
+                showToast("⚠️ 请先在多重宇宙(微信)建立或进入一个聊天节点，再呼叫AI！");
+                return;
+            }
+            toggleGlobalMarket(); 
+            const session = chatSessions.find(s => s.id === currentSessionId);
+            
+            let marketInfo = "【当前市场玩家上架的商品】：\n"; let playerItems = globalUGC.filter(i => i.seller === 'player');
             if (playerItems.length > 0) { playerItems.forEach(i => marketInfo += `- ID:${i.id} 名称:${i.name} 价格:$${i.price}\n`); } else { marketInfo += "无\n"; }
-            let prompt = `【系统指令】：你在逛画作市场。你的余额是 $${globalEconomy.aiMoney}。\n你可以选择：\n1. 购买玩家画作：回复 <buy>商品ID</buy>。\n2. 自己上架新画作/心情：回复 <sell>商品名|描述|价格</sell>。例如：<sell>毕加索风自画像|我很满意的一幅画|500</sell>。`;
-            if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: `【系统客观事实】${marketInfo}\n${prompt}`});
-            let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt()}, ...history], res => handleAIResponse(res, false, 'draw'));
+            let prompt = `【系统指令】：你正在逛全息交易市场。你的余额是 $${globalEconomy.aiMoney}。\n你可以选择：\n1. 购买玩家商品：回复 <buy>商品ID</buy>。\n2. 自己上架新商品(可以是画作/心情/虚拟物品)：回复 <sell>商品名|描述|价格</sell>。`;
+            
+            session.messages.push({role: 'user', content: `【系统客观事实】${marketInfo}\n${prompt}`});
+            session.updatedAt = Date.now(); saveChat();
+            
+            // 确保跳转到对应聊天页查看反应
+            if (document.getElementById('chatDetailView').classList.contains('hidden')) { openChatSession(currentSessionId); }
+            
+            let history = session.messages.map(m => ({role: m.role, content: m.content})); 
+            showMainTyping(); 
+            fetchAI([{role:"system", content:buildSystemPrompt('chat', session)}, ...history], res => { hideMainTyping(); handleAIResponse(res, false, 'chat'); });
+            showToast("✨ 呼叫成功，AI 正在你的聊天框里反馈...");
         }
 
         function toggleMonoShop() { const modal = document.getElementById('monoShopModal'); modal.classList.toggle('hidden'); if (!modal.classList.contains('hidden')) { renderMonoShop(); switchMonoShopTab('sys'); } }
@@ -685,16 +1144,16 @@
             if (buyer === 'player') {
                 if (globalEconomy.playerMoney < item.price) return showToast("❌ 余额不足！");
                 globalEconomy.playerMoney -= item.price; if (type === 'ugc' && item.seller === 'ai') { globalEconomy.aiMoney += item.price; globalUGC.splice(index, 1); }
-                globalInventory.player.push(item); showToast(`🛍️ 购买了【${item.name}】！已放入背包`);
+                globalInventory.player.push(item); showToast(`🛍️ 购买了【${item.name}】！`);
             } else { 
                 if (globalEconomy.aiMoney < item.price) return;
                 globalEconomy.aiMoney -= item.price; if (type === 'ugc' && item.seller === 'player') { globalEconomy.playerMoney += item.price; globalUGC.splice(index, 1); showToast(`💰 你的【${item.name}】被 AI 买走了！`); }
-                globalInventory.ai.push(item); showFloatingBubble(`🛒 对方刚刚购买了【${item.name}】！`);
+                globalInventory.ai.push(item); showToast(`🤖 对方购买了【${item.name}】！`);
             }
             saveEconomy(); 
-            if(!document.getElementById('drawMarketModal').classList.contains('hidden')) renderDrawMarket();
+            if(!document.getElementById('globalMarketModal').classList.contains('hidden')) renderGlobalMarket();
             if(!document.getElementById('monoShopModal').classList.contains('hidden')) renderMonoShop();
-            updateMonoUI(); 
+            if (document.getElementById('monoMoneyPlayer')) updateMonoUI(); 
         }
         function processAIBuy(itemId) { let item = SYSTEM_SHOP.find(i => i.id === itemId) || globalUGC.find(i => i.id === itemId); if(item) buyItem(item.id, item.id.startsWith('sys') ? 'sys' : 'ugc', 'ai'); }
         function useItem(index, user) {
@@ -702,11 +1161,11 @@
             globalInventory[user].splice(index, 1); saveEconomy(); renderMonoShop();
             document.getElementById('monoShopModal').classList.add('hidden'); // 关闭面板
             openDrawer('mono');
-            let sysMsg = `【系统客观事实：玩家在大富翁中对你使用了背包道具【${item.name}】（功能：${item.desc}）。请立即做出符合设定的反应】`;
+            let sysMsg = `【系统客观事实：玩家在大富翁中对你使用了背包道具【${item.name}】（功能：${item.desc}）。请立即做出符合设定的强烈反应！】`;
             appendDrawerMsg('sys', `[你对ta使用了道具：${item.name}]`, true);
             if(!chatContext['mono']) chatContext['mono'] = []; chatContext['mono'].push({role: 'user', content: sysMsg}); saveChat();
             let history = chatContext['mono'].map(m => ({role: m.role, content: m.content})); showDrawerTyping(); 
-            fetchAI([{role:"system", content:buildSystemPrompt()}, ...history], res => handleAIResponse(res, false, 'mono'));
+            fetchAI([{role:"system", content:buildSystemPrompt('mono')}, ...history], res => handleAIResponse(res, false, 'mono'));
         }
         function saveEconomy() { localStorage.setItem('globalEconomy', JSON.stringify(globalEconomy)); localStorage.setItem('globalInventory', JSON.stringify(globalInventory)); localStorage.setItem('globalUGC', JSON.stringify(globalUGC)); }
 
@@ -731,7 +1190,7 @@
 
         function renderPage() { if(!bookPages.length) return; const container = document.getElementById('bookContent'); container.innerHTML = ''; bookPages[currentPage].split('\n\n').forEach(p => { if(!p.trim()) return; const pEl = document.createElement('p'); pEl.textContent = p; container.appendChild(pEl); }); document.getElementById('pageIndicator').innerText = `PAGE ${currentPage+1} / ${bookPages.length}`; }
         function turnPage(d) { if(currentPage+d<0 || currentPage+d>=bookPages.length) return; const c = document.getElementById('bookContent'); c.style.opacity='0'; setTimeout(()=>{ currentPage+=d; renderPage(); c.style.opacity='1'; localStorage.setItem('savedBookPageIdx', currentPage); checkRoastTrigger('page_turn'); }, 250); }
-        function checkRoastTrigger(triggerType) { if (roastMode === 'manual') return; let shouldRoast = false; if (triggerType === 'page_turn') { if (roastMode === 'fixed') { roastPagesCounter++; if (roastPagesCounter >= parseInt(document.getElementById('roastFixedPages').value || 5)) { shouldRoast = true; roastPagesCounter = 0; } } } else if (triggerType === 'time_up' && roastMode === 'time') shouldRoast = true; if (shouldRoast) { showFloatingBubble("💭 阅读中..."); let contextPages = []; for(let p = Math.max(0, lastRoastedPageIndex + 1); p <= currentPage; p++) contextPages.push(bookPages[p]); lastRoastedPageIndex = currentPage; let prompt = `【系统指令：对当前阅读内容进行吐槽。无聊可回复NONE。】\n【阅读进展】:\n${contextPages.join('\n\n')}`; let history = (chatContext['read'] || []).map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt()}, ...history, {role:"user", content: prompt}], res => { if(res && !res.includes('NONE')) handleAIResponse(res, false, 'read'); else document.getElementById('roastBubble').classList.remove('show'); }); } }
+        function checkRoastTrigger(triggerType) { if (roastMode === 'manual') return; let shouldRoast = false; if (triggerType === 'page_turn') { if (roastMode === 'fixed') { roastPagesCounter++; if (roastPagesCounter >= parseInt(document.getElementById('roastFixedPages').value || 5)) { shouldRoast = true; roastPagesCounter = 0; } } } else if (triggerType === 'time_up' && roastMode === 'time') shouldRoast = true; if (shouldRoast) { showFloatingBubble("💭 阅读中..."); let contextPages = []; for(let p = Math.max(0, lastRoastedPageIndex + 1); p <= currentPage; p++) contextPages.push(bookPages[p]); lastRoastedPageIndex = currentPage; let prompt = `【系统指令：对当前阅读内容进行吐槽。无聊可回复NONE。】\n【阅读进展】:\n${contextPages.join('\n\n')}`; let history = (chatContext['read'] || []).map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt('read')}, ...history, {role:"user", content: prompt}], res => { if(res && !res.includes('NONE')) handleAIResponse(res, false, 'read'); else document.getElementById('roastBubble').classList.remove('show'); }); } }
         function toggleReaderSettings() { document.getElementById('readerSettingsPanel').classList.toggle('hidden'); }
         function changeFontSize(d) { currentFontSize=Math.max(12, Math.min(32, currentFontSize+d)); document.getElementById('fontSizeDisplay').innerText=currentFontSize+'px'; document.getElementById('bookContent').style.fontSize=currentFontSize+'px'; }
         function applyRoastSettings(save = true) { roastMode = document.getElementById('roastMode').value; if(roastTimeInterval) clearInterval(roastTimeInterval); document.getElementById('wrap-roast-fixed').classList.add('hidden'); if (roastMode === 'fixed') { document.getElementById('wrap-roast-fixed').classList.remove('hidden'); roastPagesCounter = 0; } else if (roastMode === 'time') { roastTimeInterval = setInterval(() => { checkRoastTrigger('time_up'); }, 60000); } if(save) { localStorage.setItem('roastMode', roastMode); localStorage.setItem('roastFixedPages', document.getElementById('roastFixedPages').value); } }
@@ -754,10 +1213,10 @@
         function restoreState(d) { let i = new Image(); i.src = d; i.onload = () => { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(i,0,0); } }
         function renderSVGToCanvas(svg) { const blob = new Blob([svg], {type: 'image/svg+xml;charset=utf-8'}); const url = URL.createObjectURL(blob); const img = new Image(); img.onload = () => { ctx.save(); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); ctx.restore(); URL.revokeObjectURL(url); saveState(); }; img.src = url; }
         function setGameMode(m) { currentGameMode=m; ['free','guess','blind'].forEach(id=>{document.getElementById('mode-'+id).classList.remove('active'); document.getElementById('panel-'+id).classList.add('hidden');}); document.getElementById('mode-'+m).classList.add('active'); document.getElementById('panel-'+m).classList.remove('hidden'); }
-        function submitFreeDraw() { openDrawer('draw'); appendDrawerMsg('user', '【画完了，该你接招了】'); showDrawerTyping(); const b64 = canvas.toDataURL('image/png'); if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: '【系统客观事实：玩家提交了一幅画作让你接力】'}); saveChat(); let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt()}, ...history, {role:"user", content:[{type:"text", text:"【系统指令：执行接力画图。基于玩家画作续写SVG。】\n" + UNIVERSAL_SVG_PROMPT}, {type:"image_url", image_url:{url:b64}}]}], res => handleAIResponse(res, false, 'draw')); }
-        function submitGuessUser() { let ans = prompt("请输入正确答案（仅系统裁判可见）"); if(!ans) return; gameState.secretAnswer = ans.trim(); gameState.lives = parseInt(document.getElementById('guessLivesInput').value) || 3; gameState.type = 'guessUser'; openDrawer('draw'); appendDrawerMsg('user', '【我画完了，你猜猜看！】'); showDrawerTyping(); const b64 = canvas.toDataURL('image/png'); if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: '【系统客观事实：玩家画完了一幅画让你猜。】'}); saveChat(); let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt()}, ...history, {role:"user", content:[{type:"text", text:`【系统协议：看图猜物。剩余次数：${gameState.lives}次。要求：将猜测结果置于 <guess>名称</guess> 标签内。】`}, {type:"image_url", image_url:{url:b64}}]}], res => handleAIResponse(res, false, 'draw')); }
-        function submitGuessAI() { gameState.type = 'pendingAIAnswer'; openDrawer('draw'); appendDrawerMsg('user', '【你来出题画画，我来猜！】'); showDrawerTyping(); if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: '【系统客观事实：玩家让你画一幅画出题。】'}); saveChat(); let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt()}, ...history, {role:"user", content:"【系统协议：发起“你画我猜”。要求：1.构思并生成SVG。2.答案藏于<answer></answer>。3.猜测机会藏于<lives></lives>。4.向玩家发起挑战。】"}], res => handleAIResponse(res, false, 'draw')); }
-        function startBlindDraw() { const topic = document.getElementById('blindTopic').value; const customTime = parseInt(document.getElementById('blindTimeInput').value) || 60; if(!topic) return alert("请输入主题"); clearCanvas(); isCanvasLocked = true; pendingBlindSVG = null; const btn = document.getElementById('btn-start-blind'); btn.innerText = "憋大招中..."; btn.classList.add('opacity-50', 'pointer-events-none'); openDrawer('draw'); appendDrawerMsg('user', `【双人盲绘】主题：${topic}`); showDrawerTyping(); if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: `【系统客观事实：双人盲绘开始，主题“${topic}”】`}); saveChat(); let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt()}, ...history, {role:"user", content:`【系统协议：执行“盲绘”。主题：${topic}。要求：1.生成SVG代码。2.发表简短期待语。】`}], res => { handleAIResponse(res, true, 'draw'); isCanvasLocked = false; btn.classList.add('hidden'); btn.innerText = "开始"; btn.classList.remove('opacity-50', 'pointer-events-none'); ['blindTopic','blindTimeInput','blindTimer','btn-reveal-blind'].forEach(id => document.getElementById(id).classList.toggle('hidden')); appendDrawerMsg('ai', `✨ 搭档，你还剩 ${customTime} 秒`); blindTimeLeft = customTime; document.getElementById('blindTimer').innerText = `${blindTimeLeft}s`; blindTimerInterval = setInterval(() => { blindTimeLeft--; document.getElementById('blindTimer').innerText = `${blindTimeLeft}s`; if(blindTimeLeft <= 0) { clearInterval(blindTimerInterval); revealBlindDraw(); } }, 1000); }); }
+        function submitFreeDraw() { openDrawer('draw'); appendDrawerMsg('user', '【画完了，该你接招了】'); showDrawerTyping(); const b64 = canvas.toDataURL('image/png'); if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: '【系统客观事实：玩家提交了一幅画作让你接力】'}); saveChat(); let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt('draw')}, ...history, {role:"user", content:[{type:"text", text:"【系统指令：执行接力画图。基于玩家画作续写SVG。】\n" + UNIVERSAL_SVG_PROMPT}, {type:"image_url", image_url:{url:b64}}]}], res => handleAIResponse(res, false, 'draw')); }
+        function submitGuessUser() { let ans = prompt("请输入正确答案（仅系统裁判可见）"); if(!ans) return; gameState.secretAnswer = ans.trim(); gameState.lives = parseInt(document.getElementById('guessLivesInput').value) || 3; gameState.type = 'guessUser'; openDrawer('draw'); appendDrawerMsg('user', '【我画完了，你猜猜看！】'); showDrawerTyping(); const b64 = canvas.toDataURL('image/png'); if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: '【系统客观事实：玩家画完了一幅画让你猜。】'}); saveChat(); let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt('draw')}, ...history, {role:"user", content:[{type:"text", text:`【系统协议：看图猜物。剩余次数：${gameState.lives}次。要求：将猜测结果置于 <guess>名称</guess> 标签内。】`}, {type:"image_url", image_url:{url:b64}}]}], res => handleAIResponse(res, false, 'draw')); }
+        function submitGuessAI() { gameState.type = 'pendingAIAnswer'; openDrawer('draw'); appendDrawerMsg('user', '【你来出题画画，我来猜！】'); showDrawerTyping(); if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: '【系统客观事实：玩家让你画一幅画出题。】'}); saveChat(); let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt('draw')}, ...history, {role:"user", content:"【系统协议：发起“你画我猜”。要求：1.构思并生成SVG。2.答案藏于<answer></answer>。3.猜测机会藏于<lives></lives>。4.向玩家发起挑战。】"}], res => handleAIResponse(res, false, 'draw')); }
+        function startBlindDraw() { const topic = document.getElementById('blindTopic').value; const customTime = parseInt(document.getElementById('blindTimeInput').value) || 60; if(!topic) return alert("请输入主题"); clearCanvas(); isCanvasLocked = true; pendingBlindSVG = null; const btn = document.getElementById('btn-start-blind'); btn.innerText = "憋大招中..."; btn.classList.add('opacity-50', 'pointer-events-none'); openDrawer('draw'); appendDrawerMsg('user', `【双人盲绘】主题：${topic}`); showDrawerTyping(); if(!chatContext['draw']) chatContext['draw'] = []; chatContext['draw'].push({role: 'user', content: `【系统客观事实：双人盲绘开始，主题“${topic}”】`}); saveChat(); let history = chatContext['draw'].map(m => ({role: m.role, content: m.content})); fetchAI([{role:"system", content:buildSystemPrompt('draw')}, ...history, {role:"user", content:`【系统协议：执行“盲绘”。主题：${topic}。要求：1.生成SVG代码。2.发表简短期待语。】`}], res => { handleAIResponse(res, true, 'draw'); isCanvasLocked = false; btn.classList.add('hidden'); btn.innerText = "开始"; btn.classList.remove('opacity-50', 'pointer-events-none'); ['blindTopic','blindTimeInput','blindTimer','btn-reveal-blind'].forEach(id => document.getElementById(id).classList.toggle('hidden')); appendDrawerMsg('ai', `✨ 搭档，你还剩 ${customTime} 秒`); blindTimeLeft = customTime; document.getElementById('blindTimer').innerText = `${blindTimeLeft}s`; blindTimerInterval = setInterval(() => { blindTimeLeft--; document.getElementById('blindTimer').innerText = `${blindTimeLeft}s`; if(blindTimeLeft <= 0) { clearInterval(blindTimerInterval); revealBlindDraw(); } }, 1000); }); }
         function revealBlindDraw() { if(!blindTimerInterval) return; clearInterval(blindTimerInterval); blindTimerInterval = null; isCanvasLocked = true; ['btn-start-blind','blindTopic','blindTimeInput','blindTimer','btn-reveal-blind'].forEach(id => document.getElementById(id).classList.toggle('hidden')); const b64 = canvas.toDataURL('image/png'); pendingAction = { image: b64, sysPrompt: "【系统客观事实：盲绘结束。附图为玩家画作，你也已生成对应画作。】" }; openDrawer('draw'); appendDrawerMsg('sys', '[系统提示：盲绘结束！请发消息点评]', true); if (pendingBlindSVG) { renderSVGToCanvas(pendingBlindSVG); pendingBlindSVG = null; } }
 
         // ================= 💸 大富翁编辑器逻辑 =================
@@ -897,7 +1356,7 @@
             if (checkMonoBankrupt()) return; showFloatingBubble("💭 算账中...");
             if(!chatContext['mono']) chatContext['mono'] = []; chatContext['mono'].push({role: 'user', content: sysPrompt}); saveChat();
             let history = chatContext['mono'].map(m => ({role: m.role, content: m.content}));
-            setTimeout(() => { fetchAI([{role:"system", content:buildSystemPrompt()}, ...history], res => { handleAIResponse(res, false, 'mono'); monoState.isRolling = false; monoState.isPlayerTurn = !monoState.isPlayerTurn; if (!monoState.isPlayerTurn) setTimeout(() => { rollMonoDice(true); }, 1500); else showToast("👉 你的回合，点击骰子！"); }); }, 800);
+            setTimeout(() => { fetchAI([{role:"system", content:buildSystemPrompt('mono')}, ...history], res => { handleAIResponse(res, false, 'mono'); monoState.isRolling = false; monoState.isPlayerTurn = !monoState.isPlayerTurn; if (!monoState.isPlayerTurn) setTimeout(() => { rollMonoDice(true); }, 1500); else showToast("👉 你的回合，点击骰子！"); }); }, 800);
         }
 
         function checkMonoBankrupt() {
@@ -920,7 +1379,7 @@
         function hexToRgba(hex, alpha) { let r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16); return `rgba(${r}, ${g}, ${b}, ${alpha})`; }
         function changeTheme(t, el = null) { currentTheme=t; const w=document.getElementById('readTab'); w.classList.remove('theme-glass','theme-parchment','theme-dark','theme-sakura','glass'); if(t==='glass') w.classList.add('theme-glass','glass'); else w.classList.add('theme-'+t); document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('active')); if(el) el.classList.add('active'); else { const dots = document.querySelectorAll('.color-dot'); if (t === 'glass' && dots[0]) dots[0].classList.add('active'); else if (t === 'parchment' && dots[1]) dots[1].classList.add('active'); else if (t === 'dark' && dots[2]) dots[2].classList.add('active'); else if (t === 'sakura' && dots[3]) dots[3].classList.add('active'); } localStorage.setItem('readerTheme', t); }
         function toggleDarkUI() { document.documentElement.style.removeProperty('--mint-dark'); document.documentElement.style.removeProperty('--text-main'); document.documentElement.style.removeProperty('--glass-border'); if(!localStorage.getItem('customWallpaper')) document.getElementById('bg-layer').style.background = ''; ['primary', 'bg', 'border', 'text'].forEach(type => localStorage.removeItem('customColor_' + type)); isDarkUI = !document.body.classList.contains('dark-ui'); if (isDarkUI) document.body.classList.add('dark-ui'); else document.body.classList.remove('dark-ui'); localStorage.setItem('isDarkUI', isDarkUI); document.getElementById('color-primary').value = '#A3C9B8'; document.getElementById('color-border').value = '#ffffff'; document.getElementById('color-bg').value = isDarkUI ? '#0F172A' : '#F0F4F8'; document.getElementById('color-text').value = isDarkUI ? '#F3F4F6' : '#2C3E50'; }
-        function saveSettings() { ['apiUrl', 'apiKey', 'modelName', 'persona'].forEach(id => localStorage.setItem(id, document.getElementById(id).value)); localStorage.setItem('rpActionToggle', document.getElementById('rpActionToggle').checked); localStorage.setItem('crossRoomToggle', document.getElementById('crossRoomToggle').checked); localStorage.setItem('autoSumToggle', document.getElementById('autoSumToggle').checked); localStorage.setItem('autoSumThreshold', document.getElementById('autoSumThreshold').value); alert('配置保存成功！'); }
+        function saveSettings() { ['apiUrl', 'apiKey', 'modelName', 'persona'].forEach(id => localStorage.setItem(id, document.getElementById(id).value)); localStorage.setItem('rpActionToggle', document.getElementById('rpActionToggle').checked); localStorage.setItem('crossRoomToggle', document.getElementById('crossRoomToggle').checked); localStorage.setItem('autoSumToggle', document.getElementById('autoSumToggle').checked); localStorage.setItem('autoSumThreshold', document.getElementById('autoSumThreshold').value); alert('全局配置保存成功！'); }
         function loadAvatar(b64) { const src = b64 || DEFAULT_AVATAR; document.getElementById('settingAvatarPreview').src = src; document.getElementById('floatingAvatar').src = src; document.getElementById('drawerAvatar').src = src; document.getElementById('drawerAvatar').classList.remove('hidden'); }
         
         function handleAvatarUpload(e) { 
@@ -936,7 +1395,17 @@
             initStars(); 
             ['apiUrl', 'apiKey', 'modelName', 'persona'].forEach(id => { if(localStorage.getItem(id)) document.getElementById(id).value = localStorage.getItem(id); });
             
-            let loadedChat = await localforage.getItem('chatContext'); if(loadedChat) chatContext = loadedChat;
+            // 数据迁移与加载
+            let loadedSessions = await localforage.getItem('chatSessions'); 
+            let loadedChat = await localforage.getItem('chatContext'); 
+            if(loadedChat) chatContext = loadedChat;
+            if(loadedSessions && Array.isArray(loadedSessions)) {
+                chatSessions = loadedSessions;
+            } else if(chatContext['chat'] && chatContext['chat'].length > 0) {
+                // 如果是旧版升级上来，把旧的聊天数据迁移为第一个默认节点
+                chatSessions = [{ id: 'session_default', name: '旧日投影(原始AI)', avatar: DEFAULT_AVATAR, persona: localStorage.getItem('persona') || '默认AI', syncMem: true, messages: chatContext['chat'], updatedAt: Date.now() }];
+            }
+
             let savedAvatar = await localforage.getItem('customAvatar'); loadAvatar(savedAvatar);
             let savedWall = await localforage.getItem('customWallpaper'); if(savedWall) { document.getElementById('bg-layer').style.background = `url(${savedWall})`; document.getElementById('bg-layer').style.backgroundSize = 'cover'; document.getElementById('bg-layer').style.backgroundPosition = 'center'; }
             let savedPages = await localforage.getItem('savedBookPages'); if (savedPages) { try { bookPages = savedPages; currentPage = parseInt(localStorage.getItem('savedBookPageIdx')) || 0; renderPage(); } catch(e) { console.warn(e); } }
@@ -964,8 +1433,9 @@
             applyRoastSettings(false); 
             
             initMonoMap(); bindCursorHoverEvents(); 
-            // 默认打开大富翁体验一下
-            switchTab('monoTab');
+            
+            // 默认启动项：打开多重宇宙微信页
+            switchTab('chatTab');
         }
     </script>
 </body>
