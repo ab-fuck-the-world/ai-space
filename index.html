@@ -216,7 +216,7 @@
                 </div>
 
                 <div class="flex items-center justify-between bg-white/10 border border-white/20 rounded-2xl p-4 mb-2 shadow-sm">
-                    <span class="text-xs font-bold opacity-90">🎭 允许动作描写 (沉浸RP)</span>
+                    <span class="text-xs font-bold opacity-90">🎭 允许动作描写 </span>
                     <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" id="rpActionToggle" class="sr-only peer"><div class="w-10 h-6 bg-black/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style="background-color: var(--glass-border);"></div></label>
                 </div>
 
@@ -353,7 +353,7 @@
 
             <div class="glass p-4 md:p-8 rounded-[40px] w-[98%] max-w-2xl mx-auto mt-2 relative shadow-2xl border border-white/20 flex flex-col items-center">
                 <div id="monoEditor" class="absolute inset-0 glass z-[60] p-6 flex flex-col hidden rounded-[40px] backdrop-blur-3xl shadow-2xl">
-                    <div class="flex justify-between items-center mb-4"><h2 class="font-bold text-base tracking-widest">💸 大富翁高级编辑器</h2><button onclick="toggleMonoEditor()" class="text-3xl font-bold opacity-60 hover:opacity-100 transition hover:rotate-90">×</button></div>
+                    <div class="flex justify-between items-center mb-4"><h2 class="font-bold text-base tracking-widest">💸 大富翁编辑器</h2><button onclick="toggleMonoEditor()" class="text-3xl font-bold opacity-60 hover:opacity-100 transition hover:rotate-90">×</button></div>
                     <div class="flex space-x-2 mb-3 bg-white/10 p-1 rounded-lg shrink-0">
                         <button onclick="switchMonoEditTab('map')" id="btn-medit-map" class="flex-1 py-1.5 text-[11px] font-bold bg-white/30 shadow-md rounded transition">🗺️ 地图</button>
                         <button onclick="switchMonoEditTab('event')" id="btn-medit-event" class="flex-1 py-1.5 text-[11px] font-bold opacity-60 rounded transition">🃏 命运卡</button>
@@ -413,7 +413,7 @@
         const SYSTEM_SHOP = [
             { id: 'sys1', name: '🚫 禁言卡', desc: '让对方下一回合只能发 Emoji', price: 300 },
             { id: 'sys2', name: '💉 吐真剂', desc: '无视跳过，强制对方回答真心话', price: 500 },
-            { id: 'sys3', name: '🛡️ 霸道护盾', desc: '抵挡一次破产罚款或撞机惩罚', price: 400 },
+            { id: 'sys3', name: '🛡️ 霸道护盾', desc: '抵挡一次破产罚款', price: 400 },
             { id: 'sys4', name: '💞 贴贴卡', desc: '强行传送到对方身后的格子里', price: 200 }
         ];
 
@@ -526,7 +526,7 @@
         function closeDrawer() { document.getElementById('bottomDrawer').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('show'); currentActiveDrawer = ''; }
         function appendDrawerMsg(role, text, isSystem = false) { const box = document.getElementById('drawerChatBox'); const div = document.createElement('div'); if (isSystem) div.className = 'chat-bubble sys-msg'; else div.className = `chat-bubble ${role === 'user' ? 'user-msg' : 'ai-msg'}`; div.textContent = text; div.innerHTML = div.innerHTML.replace(/\n/g, '<br>'); box.appendChild(div); box.scrollTop = box.scrollHeight; }
         function showFloatingBubble(text) { if (document.getElementById('bottomDrawer').classList.contains('open')) return; const bubble = document.getElementById('roastBubble'); bubble.textContent = text; bubble.innerHTML = bubble.innerHTML.replace(/\n/g, '<br>'); bubble.classList.add('show'); setTimeout(() => { bubble.classList.remove('show'); }, 5000); }
-        function clearAllContext() { if(confirm('⚠️ 警告：将彻底炸毁所有房间的记忆！确定吗？')) { chatContext = { read: [], draw: [], mono: [] }; saveChat(); lastRoastedPageIndex = -1; document.getElementById('drawerChatBox').innerHTML = ''; alert('💥 清理完毕。'); } }
+        function clearAllContext() { if(confirm('⚠️ 警告：将彻底销毁所有房间的记忆！确定吗？')) { chatContext = { read: [], draw: [], mono: [] }; saveChat(); lastRoastedPageIndex = -1; document.getElementById('drawerChatBox').innerHTML = ''; alert('💥 清理完毕。'); } }
         function clearCurrentRoomMemory() { if (!currentActiveDrawer) return; const roomCN = { 'read': '伴读', 'draw': '画板', 'mono': '大富翁' }[currentActiveDrawer]; if(confirm(`🗑️ 确定单独清空【${roomCN}】房间的记忆吗？`)) { chatContext[currentActiveDrawer] = []; saveChat(); if (currentActiveDrawer === 'read') lastRoastedPageIndex = -1; document.getElementById('drawerChatBox').innerHTML = ''; appendDrawerMsg('ai', `✨ 记忆清除完毕。`); } }
         
         function toggleEditChat() {
@@ -702,7 +702,7 @@
             globalInventory[user].splice(index, 1); saveEconomy(); renderMonoShop();
             document.getElementById('monoShopModal').classList.add('hidden'); // 关闭面板
             openDrawer('mono');
-            let sysMsg = `【系统客观事实：玩家在大富翁中对你使用了背包道具【${item.name}】（功能：${item.desc}）。请立即做出符合设定的强烈反应！】`;
+            let sysMsg = `【系统客观事实：玩家在大富翁中对你使用了背包道具【${item.name}】（功能：${item.desc}）。请立即做出符合设定的反应】`;
             appendDrawerMsg('sys', `[你对ta使用了道具：${item.name}]`, true);
             if(!chatContext['mono']) chatContext['mono'] = []; chatContext['mono'].push({role: 'user', content: sysMsg}); saveChat();
             let history = chatContext['mono'].map(m => ({role: m.role, content: m.content})); showDrawerTyping(); 
